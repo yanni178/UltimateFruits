@@ -6,17 +6,35 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <style>
     body {
-      background: #111;
+      background: url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+      background-size: cover;
       color: white;
       font-family: Arial, sans-serif;
       text-align: center;
       margin: 0;
       padding: 0;
     }
-    .card {
-      background: #222;
+    h1 {
+      text-shadow: 2px 2px 8px #000;
+      margin-top: 20px;
+    }
+    .cards-container {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
       margin: 20px;
-      padding: 20px;
+    }
+    .card {
+      background: rgba(0,0,0,0.7);
+      margin: 15px;
+      padding: 15px;
+      border-radius: 15px;
+      width: 200px;
+      text-align: center;
+      box-shadow: 0 0 15px #00ff88;
+    }
+    .card img {
+      width: 100%;
       border-radius: 10px;
     }
     button {
@@ -26,6 +44,7 @@
       border-radius: 8px;
       font-weight: bold;
       cursor: pointer;
+      margin-top: 10px;
     }
   </style>
 </head>
@@ -33,28 +52,36 @@
 
 <h1>🔥 Ultimate Fruits 🔥</h1>
 
-<div class="card">
-  <h2>Venom</h2>
-  <p>R$ 10,00</p>
-  <a href="https://wa.me/5516920016201"><button>Comprar</button></a>
-</div>
+<div class="cards-container">
 
-<div class="card">
-  <h2>Trex</h2>
-  <p>R$ 9,50</p>
-  <a href="https://wa.me/5516920016201"><button>Comprar</button></a>
-</div>
+  <div class="card">
+    <img src="https://i.imgur.com/venom.png" alt="Venom">
+    <h2>Venom</h2>
+    <p>R$ 10,00</p>
+    <a href="https://wa.me/5516920016201"><button>Comprar</button></a>
+  </div>
 
-<div class="card">
-  <h2>Shadow</h2>
-  <p>R$ 8,00</p>
-  <a href="https://wa.me/5516920016201"><button>Comprar</button></a>
-</div>
+  <div class="card">
+    <img src="https://i.imgur.com/trex.png" alt="Trex">
+    <h2>Trex</h2>
+    <p>R$ 9,50</p>
+    <a href="https://wa.me/5516920016201"><button>Comprar</button></a>
+  </div>
 
-<div class="card">
-  <h2>Yeti</h2>
-  <p>R$ 13,50</p>
-  <a href="https://wa.me/5516920016201"><button>Comprar</button></a>
+  <div class="card">
+    <img src="https://i.imgur.com/shadow.png" alt="Shadow">
+    <h2>Shadow</h2>
+    <p>R$ 8,00</p>
+    <a href="https://wa.me/5516920016201"><button>Comprar</button></a>
+  </div>
+
+  <div class="card">
+    <img src="https://i.imgur.com/yeti.png" alt="Yeti">
+    <h2>Yeti</h2>
+    <p>R$ 13,50</p>
+    <a href="https://wa.me/5516920016201"><button>Comprar</button></a>
+  </div>
+
 </div>
 
 </body>
