@@ -1,127 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Ultimate Fruits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  color: white;
+  text-align: center;
+  background: url('https://images.unsplash.com/photo-1549921296-3a6b0d1d7a86?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+  background-size: cover;
+}
+
+header {
+  background: rgba(0,0,0,0.6);
+  padding: 20px;
+  font-size: 28px;
+  font-weight: bold;
+  text-shadow: 0 0 10px #00ffcc;
+}
+
+.cards-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  padding: 20px;
+}
+
+.card {
+  background: rgba(0,0,0,0.75);
+  margin: 15px;
+  padding: 15px;
+  border-radius: 18px;
+  width: 220px;
+  box-shadow: 0 0 20px #00ffcc;
+  transition: 0.3s;
+}
+
+.card:hover {
+  transform: scale(1.05);
+}
+
+.card img {
+  width: 100%;
+  border-radius: 12px;
+}
+
+button {
+  background: linear-gradient(45deg,#00ffcc,#00ff88);
+  border: none;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-weight: bold;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+/* MODAL */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 999;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.8);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-box {
+  background: #111;
+  padding: 25px;
+  border-radius: 15px;
+  width: 320px;
+  text-align: left;
+  box-shadow: 0 0 25px #00ffcc;
+}
+
+.modal-box h2 {
+  text-align: center;
+}
+
+input, select {
+  width: 100%;
+  padding: 8px;
+  margin: 6px 0 12px 0;
+  border-radius: 6px;
+  border: none;
+}
+
+.pix-box {
+  background: #000;
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+  margin-top: 10px;
+  color: #00ffcc;
+  font-weight: bold;
+}
+
+.close-btn {
+  background: red;
+  width: 100%;
+}
+</style>
+</head>
+
+<body>
+
+<header>🔥 Ultimate Fruits 🔥</header>
+
+<div class="cards-container">
+
+  <div class="card">
+    <img src="https://i.imgur.com/xRix2sP.png">
+    <h3>Venom</h3>
+    <p>R$ 10,00</p>
+    <button onclick="abrirModal('Venom', '10,00')">Comprar</button>
+  </div>
+
+  <div class="card">
+    <img src="https://i.imgur.com/3YJ0p6t.png">
+    <h3>Trex</h3>
+    <p>R$ 9,50</p>
+    <button onclick="abrirModal('Trex', '9,50')">Comprar</button>
+  </div>
+
+  <div class="card">
+    <img src="https://i.imgur.com/vcZ0Qqg.png">
+    <h3>Shadow</h3>
+    <p>R$ 8,00</p>
+    <button onclick="abrirModal('Shadow', '8,00')">Comprar</button>
+  </div>
+
+  <div class="card">
+    <img src="https://i.imgur.com/BOjQnPX.png">
+    <h3>Yeti</h3>
+    <p>R$ 13,50</p>
+    <button onclick="abrirModal('Yeti', '13,50')">Comprar</button>
+  </div>
+
+</div>
+
+<!-- MODAL PAGAMENTO -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h2>Pagamento</h2>
+
+    <label>Produto</label>
+    <input id="produto" disabled>
+
+    <label>Preço</label>
+    <input id="preco" disabled>
+
+    <label>Nome</label>
+    <input placeholder="Seu nome">
+
+    <label>CPF</label>
+    <input placeholder="000.000.000-00">
+
+    <label>Forma de pagamento</label>
+    <select onchange="mostrarPix(this.value)">
+      <option value="">Selecione</option>
+      <option value="pix">PIX</option>
+      <option value="cartao">Cartão</option>
+    </select>
+
+    <div id="pixArea" style="display:none;">
+      <div class="pix-box">
+        PIX: 46786167802
+      </div>
+    </div>
+
+    <button onclick="finalizar()">Finalizar Compra</button>
+    <button class="close-btn" onclick="fecharModal()">Fechar</button>
+  </div>
+</div>
 
 <script>
-const produtos = [
-  { nome: "Venom", preco: 10, img: "https://i.imgur.com/xRix2sP.png" },
-  { nome: "Trex", preco: 9.5, img: "https://i.imgur.com/3YJ0p6t.png" },
-  { nome: "Shadow", preco: 8, img: "https://i.imgur.com/vcZ0Qqg.png" },
-  { nome: "Yeti", preco: 13.5, img: "https://i.imgur.com/BOjQnPX.png" }
-];
-
-let carrinho = JSON.parse(localStorage.getItem("carrinho")) || {};
-
-function salvar() {
-  localStorage.setItem("carrinho", JSON.stringify(carrinho));
-}
-
-function renderProdutos() {
-  const area = document.getElementById("produtos");
-  area.innerHTML = "";
-
-  produtos.forEach((p, i) => {
-    area.innerHTML += `
-      <div class="card">
-        <img src="${p.img}">
-        <h3>${p.nome}</h3>
-        <p>R$ ${p.preco.toFixed(2)}</p>
-        <button onclick="addProduto(${i})">Adicionar</button>
-      </div>
-    `;
-  });
-}
-
-function addProduto(i) {
-  const prod = produtos[i];
-
-  if (!carrinho[prod.nome]) {
-    carrinho[prod.nome] = { ...prod, qtd: 0 };
-  }
-
-  carrinho[prod.nome].qtd++;
-
-  salvar();
-  atualizarContador();
-  abrirCarrinho(); // 🔥 abre automático
-}
-
-function atualizarContador() {
-  let total = 0;
-  Object.values(carrinho).forEach(p => total += p.qtd);
-  document.getElementById("count").innerText = total;
-}
-
-function abrirCarrinho() {
+function abrirModal(prod, preco) {
   document.getElementById("modal").style.display = "flex";
-  renderCarrinho();
+  document.getElementById("produto").value = prod;
+  document.getElementById("preco").value = "R$ " + preco;
 }
 
-function fecharCarrinho() {
+function fecharModal() {
   document.getElementById("modal").style.display = "none";
 }
 
-function renderCarrinho() {
-  const lista = document.getElementById("lista");
-  lista.innerHTML = "";
-
-  let total = 0;
-
-  Object.values(carrinho).forEach(p => {
-    total += p.preco * p.qtd;
-
-    lista.innerHTML += `
-      <div class="item">
-        ${p.nome} x${p.qtd}
-        <div>
-          <button class="qty-btn" onclick="diminuir('${p.nome}')">-</button>
-          <button class="qty-btn" onclick="aumentar('${p.nome}')">+</button>
-        </div>
-      </div>
-    `;
-  });
-
-  document.getElementById("total").innerText =
-    "Total: R$ " + total.toFixed(2);
-}
-
-function aumentar(nome) {
-  carrinho[nome].qtd++;
-  salvar();
-  atualizarContador();
-  renderCarrinho();
-}
-
-function diminuir(nome) {
-  carrinho[nome].qtd--;
-
-  if (carrinho[nome].qtd <= 0) {
-    delete carrinho[nome];
-  }
-
-  salvar();
-  atualizarContador();
-  renderCarrinho();
-}
-
-function limpar() {
-  carrinho = {};
-  salvar();
-  atualizarContador();
-  renderCarrinho();
-}
-
-function mostrarPix(v) {
+function mostrarPix(valor) {
   document.getElementById("pixArea").style.display =
-    v === "pix" ? "block" : "none";
+    valor === "pix" ? "block" : "none";
 }
 
 function finalizar() {
-  if (Object.keys(carrinho).length === 0) {
-    alert("Carrinho vazio!");
-    return;
-  }
-
-  alert("✅ Pedido criado! Pague no PIX.");
+  alert("Pedido enviado! Após o pagamento via PIX, aguarde a entrega.");
+  fecharModal();
 }
-
-renderProdutos();
-atualizarContador();
 </script>
+
+</body>
+</html>
