@@ -1,299 +1,127 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>Ultimate Fruits</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<style>
-body{
-  margin:0;
-  font-family:Arial, sans-serif;
-  color:white;
-  background:black;
-  overflow-x:hidden;
-}
-
-/* FUNDO */
-canvas{
-  position:fixed;
-  top:0;
-  left:0;
-  z-index:-1;
-}
-
-/* HEADER */
-header{
-  background:rgba(0,0,0,.6);
-  padding:15px;
-  display:flex;
-  justify-content:space-between;
-  align-items:center;
-  font-size:22px;
-  text-shadow:0 0 15px #00ffee;
-}
-
-.cart-btn{
-  background:#00ffcc;
-  color:black;
-  padding:8px 14px;
-  border-radius:10px;
-  cursor:pointer;
-  font-weight:bold;
-}
-
-/* PRODUTOS */
-.container{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  padding:20px;
-}
-
-.card{
-  background:rgba(0,0,0,.75);
-  margin:12px;
-  padding:15px;
-  border-radius:18px;
-  width:200px;
-  box-shadow:0 0 20px #00ffcc;
-  transition:.25s;
-}
-
-.card:hover{ transform:scale(1.05); }
-
-.card img{
-  width:100%;
-  border-radius:12px;
-}
-
-button{
-  background:linear-gradient(45deg,#00ffcc,#00ff88);
-  border:none;
-  padding:8px;
-  border-radius:10px;
-  font-weight:bold;
-  cursor:pointer;
-  width:100%;
-  margin-top:6px;
-}
-
-/* MODAL */
-.modal{
-  display:none;
-  position:fixed;
-  z-index:999;
-  width:100%;
-  height:100%;
-  background:rgba(0,0,0,.9);
-  justify-content:center;
-  align-items:center;
-}
-
-.modal-box{
-  background:#111;
-  padding:20px;
-  border-radius:15px;
-  width:340px;
-  box-shadow:0 0 25px #00ffcc;
-  max-height:90vh;
-  overflow:auto;
-}
-
-.item{
-  display:flex;
-  justify-content:space-between;
-  margin:6px 0;
-}
-
-.qty-btn{
-  width:28px;
-  padding:2px;
-}
-
-.total{
-  font-size:18px;
-  color:#00ffcc;
-  margin:8px 0;
-}
-
-.pix{
-  background:#000;
-  padding:10px;
-  border-radius:8px;
-  text-align:center;
-  margin-top:8px;
-  color:#00ffcc;
-  font-weight:bold;
-}
-
-.close{ background:red; }
-.clear{ background:#444; }
-</style>
-</head>
-
-<body>
-
-<canvas id="stars"></canvas>
-
-<header>
-🔥 Ultimate Fruits 🔥
-<div class="cart-btn" onclick="abrirCarrinho()">
-🛒 (<span id="count">0</span>)
-</div>
-</header>
-
-<div class="container" id="produtos"></div>
-
-<!-- MODAL -->
-<div class="modal" id="modal">
-  <div class="modal-box">
-    <h2>🛒 Seu Carrinho</h2>
-
-    <div id="lista"></div>
-    <div class="total" id="total"></div>
-
-    <label>Pagamento</label>
-    <select onchange="mostrarPix(this.value)">
-      <option value="">Selecione</option>
-      <option value="pix">PIX</option>
-    </select>
-
-    <div id="pixArea" style="display:none;">
-      <div class="pix">
-        PIX: 46786167802
-        <br><br>
-        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=46786167802">
-      </div>
-    </div>
-
-    <button onclick="finalizar()">Finalizar</button>
-    <button class="clear" onclick="limpar()">Limpar Carrinho</button>
-    <button class="close" onclick="fecharCarrinho()">Fechar</button>
-  </div>
-</div>
 
 <script>
-const produtos=[
-{nome:"Venom",preco:10,img:"https://i.imgur.com/xRix2sP.png"},
-{nome:"Trex",preco:9.5,img:"https://i.imgur.com/3YJ0p6t.png"},
-{nome:"Shadow",preco:8,img:"https://i.imgur.com/vcZ0Qqg.png"},
-{nome:"Yeti",preco:13.5,img:"https://i.imgur.com/BOjQnPX.png"}
+const produtos = [
+  { nome: "Venom", preco: 10, img: "https://i.imgur.com/xRix2sP.png" },
+  { nome: "Trex", preco: 9.5, img: "https://i.imgur.com/3YJ0p6t.png" },
+  { nome: "Shadow", preco: 8, img: "https://i.imgur.com/vcZ0Qqg.png" },
+  { nome: "Yeti", preco: 13.5, img: "https://i.imgur.com/BOjQnPX.png" }
 ];
 
-let carrinho=JSON.parse(localStorage.getItem("carrinho"))||{};
+let carrinho = JSON.parse(localStorage.getItem("carrinho")) || {};
 
-function salvar(){ localStorage.setItem("carrinho",JSON.stringify(carrinho)); }
-
-function renderProdutos(){
-let area=document.getElementById("produtos");
-area.innerHTML="";
-produtos.forEach((p,i)=>{
-area.innerHTML+=`
-<div class="card">
-<img src="${p.img}">
-<h3>${p.nome}</h3>
-<p>R$ ${p.preco.toFixed(2)}</p>
-<button onclick="add(${i})">Adicionar</button>
-</div>`;
-});
+function salvar() {
+  localStorage.setItem("carrinho", JSON.stringify(carrinho));
 }
 
-function add(i){
-const nome=produtos[i].nome;
-if(!carrinho[nome]) carrinho[nome]={...produtos[i],qtd:0};
-carrinho[nome].qtd++;
-salvar();
-updateCount();
-abrirCarrinho(); // 🔥 abre automático
+function renderProdutos() {
+  const area = document.getElementById("produtos");
+  area.innerHTML = "";
+
+  produtos.forEach((p, i) => {
+    area.innerHTML += `
+      <div class="card">
+        <img src="${p.img}">
+        <h3>${p.nome}</h3>
+        <p>R$ ${p.preco.toFixed(2)}</p>
+        <button onclick="addProduto(${i})">Adicionar</button>
+      </div>
+    `;
+  });
 }
 
-function updateCount(){
-let total=0;
-Object.values(carrinho).forEach(p=> total+=p.qtd);
-document.getElementById("count").innerText=total;
+function addProduto(i) {
+  const prod = produtos[i];
+
+  if (!carrinho[prod.nome]) {
+    carrinho[prod.nome] = { ...prod, qtd: 0 };
+  }
+
+  carrinho[prod.nome].qtd++;
+
+  salvar();
+  atualizarContador();
+  abrirCarrinho(); // 🔥 abre automático
 }
 
-function abrirCarrinho(){
-document.getElementById("modal").style.display="flex";
-renderCarrinho();
+function atualizarContador() {
+  let total = 0;
+  Object.values(carrinho).forEach(p => total += p.qtd);
+  document.getElementById("count").innerText = total;
 }
 
-function fecharCarrinho(){
-document.getElementById("modal").style.display="none";
+function abrirCarrinho() {
+  document.getElementById("modal").style.display = "flex";
+  renderCarrinho();
 }
 
-function renderCarrinho(){
-let lista=document.getElementById("lista");
-lista.innerHTML="";
-let total=0;
-
-Object.values(carrinho).forEach(p=>{
-total+=p.preco*p.qtd;
-lista.innerHTML+=`
-<div class="item">
-${p.nome} x${p.qtd}
-<div>
-<button class="qty-btn" onclick="menos('${p.nome}')">-</button>
-<button class="qty-btn" onclick="mais('${p.nome}')">+</button>
-</div>
-</div>`;
-});
-
-document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
+function fecharCarrinho() {
+  document.getElementById("modal").style.display = "none";
 }
 
-function mais(n){ carrinho[n].qtd++; salvar(); updateCount(); renderCarrinho(); }
-function menos(n){
-carrinho[n].qtd--;
-if(carrinho[n].qtd<=0) delete carrinho[n];
-salvar(); updateCount(); renderCarrinho();
+function renderCarrinho() {
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
+  let total = 0;
+
+  Object.values(carrinho).forEach(p => {
+    total += p.preco * p.qtd;
+
+    lista.innerHTML += `
+      <div class="item">
+        ${p.nome} x${p.qtd}
+        <div>
+          <button class="qty-btn" onclick="diminuir('${p.nome}')">-</button>
+          <button class="qty-btn" onclick="aumentar('${p.nome}')">+</button>
+        </div>
+      </div>
+    `;
+  });
+
+  document.getElementById("total").innerText =
+    "Total: R$ " + total.toFixed(2);
 }
 
-function limpar(){
-carrinho={};
-salvar();
-updateCount();
-renderCarrinho();
+function aumentar(nome) {
+  carrinho[nome].qtd++;
+  salvar();
+  atualizarContador();
+  renderCarrinho();
 }
 
-function mostrarPix(v){
-document.getElementById("pixArea").style.display=
-v==="pix"?"block":"none";
+function diminuir(nome) {
+  carrinho[nome].qtd--;
+
+  if (carrinho[nome].qtd <= 0) {
+    delete carrinho[nome];
+  }
+
+  salvar();
+  atualizarContador();
+  renderCarrinho();
 }
 
-function finalizar(){
-alert("✅ Pedido criado! Pague no PIX.");
+function limpar() {
+  carrinho = {};
+  salvar();
+  atualizarContador();
+  renderCarrinho();
+}
+
+function mostrarPix(v) {
+  document.getElementById("pixArea").style.display =
+    v === "pix" ? "block" : "none";
+}
+
+function finalizar() {
+  if (Object.keys(carrinho).length === 0) {
+    alert("Carrinho vazio!");
+    return;
+  }
+
+  alert("✅ Pedido criado! Pague no PIX.");
 }
 
 renderProdutos();
-updateCount();
-
-/* ESTRELAS */
-const c=document.getElementById("stars");
-const ctx=c.getContext("2d");
-c.width=window.innerWidth;
-c.height=window.innerHeight;
-
-let stars=[];
-for(let i=0;i<160;i++){
-stars.push({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2,v:Math.random()*0.5});
-}
-
-function draw(){
-ctx.clearRect(0,0,c.width,c.height);
-ctx.fillStyle="white";
-stars.forEach(st=>{
-ctx.beginPath();
-ctx.arc(st.x,st.y,st.s,0,Math.PI*2);
-ctx.fill();
-st.y+=st.v;
-if(st.y>c.height) st.y=0;
-});
-requestAnimationFrame(draw);
-}
-draw();
+atualizarContador();
 </script>
-
-</body>
-</html>
