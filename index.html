@@ -83,6 +83,63 @@
         align-items: center;
       }
     }
+
+    /* Modal */
+    .modal {
+      display: none; 
+      position: fixed; 
+      z-index: 1000; 
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.8);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background-color: rgba(0,0,0,0.9);
+      padding: 20px;
+      border-radius: 15px;
+      width: 90%;
+      max-width: 400px;
+      text-align: left;
+      color: white;
+    }
+
+    .modal-content h2 {
+      text-align: center;
+      text-shadow: 1px 1px 5px black;
+    }
+
+    .modal-content label {
+      display: block;
+      margin: 10px 0 5px;
+    }
+
+    .modal-content input, 
+    .modal-content select {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: none;
+      margin-bottom: 10px;
+    }
+
+    .modal-content button {
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .close {
+      color: #ff5555;
+      float: right;
+      font-size: 24px;
+      cursor: pointer;
+    }
+
   </style>
 </head>
 <body>
@@ -96,9 +153,7 @@
     <div class="card-content">
       <h2>Venom</h2>
       <p>R$ 10,00</p>
-      <a href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=VENOM" target="_blank">
-        <button>Comprar</button>
-      </a>
+      <button onclick="openModal('Venom', 10)">Comprar</button>
     </div>
   </div>
 
@@ -107,9 +162,7 @@
     <div class="card-content">
       <h2>Trex</h2>
       <p>R$ 9,50</p>
-      <a href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=TREX" target="_blank">
-        <button>Comprar</button>
-      </a>
+      <button onclick="openModal('Trex', 9.5)">Comprar</button>
     </div>
   </div>
 
@@ -118,9 +171,7 @@
     <div class="card-content">
       <h2>Shadow</h2>
       <p>R$ 8,00</p>
-      <a href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=SHADOW" target="_blank">
-        <button>Comprar</button>
-      </a>
+      <button onclick="openModal('Shadow', 8)">Comprar</button>
     </div>
   </div>
 
@@ -129,13 +180,73 @@
     <div class="card-content">
       <h2>Yeti</h2>
       <p>R$ 13,50</p>
-      <a href="https://www.mercadopago.com.br/checkout/v1/redirect?pref_id=YETI" target="_blank">
-        <button>Comprar</button>
-      </a>
+      <button onclick="openModal('Yeti', 13.5)">Comprar</button>
     </div>
   </div>
 
 </div>
+
+<!-- Modal -->
+<div id="purchaseModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeModal()">&times;</span>
+    <h2 id="modalTitle">Comprar Produto</h2>
+    <form id="purchaseForm">
+      <label>Produto:</label>
+      <input type="text" id="productName" readonly>
+      
+      <label>Preço (R$):</label>
+      <input type="text" id="productPrice" readonly>
+      
+      <label>Nome Completo:</label>
+      <input type="text" id="fullName" required>
+      
+      <label>CPF:</label>
+      <input type="text" id="cpf" required placeholder="000.000.000-00">
+      
+      <label>Forma de Pagamento:</label>
+      <select id="paymentMethod" required>
+        <option value="">Selecione</option>
+        <option value="Pix">Pix</option>
+        <option value="Boleto">Boleto</option>
+        <option value="Cartão de Crédito">Cartão de Crédito</option>
+      </select>
+      
+      <button type="submit">Finalizar Compra</button>
+    </form>
+  </div>
+</div>
+
+<script>
+  const modal = document.getElementById("purchaseModal");
+  const productNameInput = document.getElementById("productName");
+  const productPriceInput = document.getElementById("productPrice");
+
+  function openModal(name, price) {
+    productNameInput.value = name;
+    productPriceInput.value = price.toFixed(2);
+    modal.style.display = "flex";
+  }
+
+  function closeModal() {
+    modal.style.display = "none";
+    document.getElementById("purchaseForm").reset();
+  }
+
+  // Fechar modal ao clicar fora
+  window.onclick = function(event) {
+    if (event.target == modal) {
+      closeModal();
+    }
+  }
+
+  // Exemplo de envio do formulário
+  document.getElementById("purchaseForm").addEventListener("submit", function(e){
+    e.preventDefault();
+    alert("Compra finalizada com sucesso!\nProduto: " + productNameInput.value + "\nPreço: R$" + productPriceInput.value + "\nNome: " + document.getElementById("fullName").value + "\nCPF: " + document.getElementById("cpf").value + "\nPagamento: " + document.getElementById("paymentMethod").value);
+    closeModal();
+  });
+</script>
 
 </body>
 </html>
