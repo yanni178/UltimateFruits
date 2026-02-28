@@ -10,11 +10,11 @@ body{
   margin:0;
   font-family:Arial, sans-serif;
   color:white;
-  overflow-x:hidden;
   background:black;
+  overflow-x:hidden;
 }
 
-/* FUNDO GALÁCTICO */
+/* FUNDO */
 canvas{
   position:fixed;
   top:0;
@@ -24,7 +24,7 @@ canvas{
 
 /* HEADER */
 header{
-  background:rgba(0,0,0,0.6);
+  background:rgba(0,0,0,.6);
   padding:15px;
   display:flex;
   justify-content:space-between;
@@ -36,7 +36,7 @@ header{
 .cart-btn{
   background:#00ffcc;
   color:black;
-  padding:8px 12px;
+  padding:8px 14px;
   border-radius:10px;
   cursor:pointer;
   font-weight:bold;
@@ -51,13 +51,13 @@ header{
 }
 
 .card{
-  background:rgba(0,0,0,0.75);
+  background:rgba(0,0,0,.75);
   margin:12px;
   padding:15px;
   border-radius:18px;
   width:200px;
   box-shadow:0 0 20px #00ffcc;
-  transition:.3s;
+  transition:.25s;
 }
 
 .card:hover{ transform:scale(1.05); }
@@ -100,12 +100,15 @@ button{
   overflow:auto;
 }
 
-input,select{
-  width:100%;
-  padding:8px;
-  margin:6px 0 10px 0;
-  border-radius:6px;
-  border:none;
+.item{
+  display:flex;
+  justify-content:space-between;
+  margin:6px 0;
+}
+
+.qty-btn{
+  width:28px;
+  padding:2px;
 }
 
 .total{
@@ -124,9 +127,8 @@ input,select{
   font-weight:bold;
 }
 
-.close{
-  background:red;
-}
+.close{ background:red; }
+.clear{ background:#444; }
 </style>
 </head>
 
@@ -146,16 +148,10 @@ input,select{
 <!-- MODAL -->
 <div class="modal" id="modal">
   <div class="modal-box">
-    <h2>Finalizar Pedido</h2>
+    <h2>🛒 Seu Carrinho</h2>
 
     <div id="lista"></div>
     <div class="total" id="total"></div>
-
-    <label>Nome</label>
-    <input id="nome">
-
-    <label>CPF</label>
-    <input>
 
     <label>Pagamento</label>
     <select onchange="mostrarPix(this.value)">
@@ -171,24 +167,23 @@ input,select{
       </div>
     </div>
 
-    <button onclick="finalizar()">Confirmar</button>
+    <button onclick="finalizar()">Finalizar</button>
+    <button class="clear" onclick="limpar()">Limpar Carrinho</button>
     <button class="close" onclick="fecharCarrinho()">Fechar</button>
   </div>
 </div>
 
 <script>
 const produtos=[
-{name:"Venom",preco:10,img:"https://i.imgur.com/xRix2sP.png"},
-{name:"Trex",preco:9.5,img:"https://i.imgur.com/3YJ0p6t.png"},
-{name:"Shadow",preco:8,img:"https://i.imgur.com/vcZ0Qqg.png"},
-{name:"Yeti",preco:13.5,img:"https://i.imgur.com/BOjQnPX.png"}
+{nome:"Venom",preco:10,img:"https://i.imgur.com/xRix2sP.png"},
+{nome:"Trex",preco:9.5,img:"https://i.imgur.com/3YJ0p6t.png"},
+{nome:"Shadow",preco:8,img:"https://i.imgur.com/vcZ0Qqg.png"},
+{nome:"Yeti",preco:13.5,img:"https://i.imgur.com/BOjQnPX.png"}
 ];
 
-let carrinho=JSON.parse(localStorage.getItem("carrinho"))||[];
+let carrinho=JSON.parse(localStorage.getItem("carrinho"))||{};
 
-function salvar(){
-localStorage.setItem("carrinho",JSON.stringify(carrinho));
-}
+function salvar(){ localStorage.setItem("carrinho",JSON.stringify(carrinho)); }
 
 function renderProdutos(){
 let area=document.getElementById("produtos");
@@ -197,22 +192,26 @@ produtos.forEach((p,i)=>{
 area.innerHTML+=`
 <div class="card">
 <img src="${p.img}">
-<h3>${p.name}</h3>
+<h3>${p.nome}</h3>
 <p>R$ ${p.preco.toFixed(2)}</p>
 <button onclick="add(${i})">Adicionar</button>
-</div>
-`;
+</div>`;
 });
 }
 
 function add(i){
-carrinho.push(produtos[i]);
+const nome=produtos[i].nome;
+if(!carrinho[nome]) carrinho[nome]={...produtos[i],qtd:0};
+carrinho[nome].qtd++;
 salvar();
 updateCount();
+abrirCarrinho(); // 🔥 abre automático
 }
 
 function updateCount(){
-document.getElementById("count").innerText=carrinho.length;
+let total=0;
+Object.values(carrinho).forEach(p=> total+=p.qtd);
+document.getElementById("count").innerText=total;
 }
 
 function abrirCarrinho(){
@@ -228,11 +227,34 @@ function renderCarrinho(){
 let lista=document.getElementById("lista");
 lista.innerHTML="";
 let total=0;
-carrinho.forEach(p=>{
-total+=p.preco;
-lista.innerHTML+=`• ${p.name} - R$ ${p.preco.toFixed(2)}<br>`;
+
+Object.values(carrinho).forEach(p=>{
+total+=p.preco*p.qtd;
+lista.innerHTML+=`
+<div class="item">
+${p.nome} x${p.qtd}
+<div>
+<button class="qty-btn" onclick="menos('${p.nome}')">-</button>
+<button class="qty-btn" onclick="mais('${p.nome}')">+</button>
+</div>
+</div>`;
 });
+
 document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
+}
+
+function mais(n){ carrinho[n].qtd++; salvar(); updateCount(); renderCarrinho(); }
+function menos(n){
+carrinho[n].qtd--;
+if(carrinho[n].qtd<=0) delete carrinho[n];
+salvar(); updateCount(); renderCarrinho();
+}
+
+function limpar(){
+carrinho={};
+salvar();
+updateCount();
+renderCarrinho();
 }
 
 function mostrarPix(v){
@@ -241,41 +263,32 @@ v==="pix"?"block":"none";
 }
 
 function finalizar(){
-alert("Pedido registrado! Após pagamento via PIX, aguarde.");
-carrinho=[];
-salvar();
-updateCount();
-fecharCarrinho();
+alert("✅ Pedido criado! Pague no PIX.");
 }
 
 renderProdutos();
 updateCount();
 
-/* FUNDO ESTRELAS */
-const canvas=document.getElementById("stars");
-const ctx=canvas.getContext("2d");
-canvas.width=window.innerWidth;
-canvas.height=window.innerHeight;
+/* ESTRELAS */
+const c=document.getElementById("stars");
+const ctx=c.getContext("2d");
+c.width=window.innerWidth;
+c.height=window.innerHeight;
 
 let stars=[];
-for(let i=0;i<150;i++){
-stars.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-size:Math.random()*2,
-speed:Math.random()*0.5
-});
+for(let i=0;i<160;i++){
+stars.push({x:Math.random()*c.width,y:Math.random()*c.height,s:Math.random()*2,v:Math.random()*0.5});
 }
 
 function draw(){
-ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.clearRect(0,0,c.width,c.height);
 ctx.fillStyle="white";
-stars.forEach(s=>{
+stars.forEach(st=>{
 ctx.beginPath();
-ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+ctx.arc(st.x,st.y,st.s,0,Math.PI*2);
 ctx.fill();
-s.y+=s.speed;
-if(s.y>canvas.height)s.y=0;
+st.y+=st.v;
+if(st.y>c.height) st.y=0;
 });
 requestAnimationFrame(draw);
 }
