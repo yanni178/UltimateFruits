@@ -1,251 +1,285 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Ultimate Fruits - Galáxia</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background: url('https://r1.ilikewallpaper.net/iphone-12-pro-max-wallpapers/download-118146/Space-Galaxy-Top-Free-Space-Galaxy-Backgrounds-Acc.jpg') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
+<meta charset="UTF-8">
+<title>Ultimate Fruits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    h1 {
-      text-shadow: 2px 2px 10px black;
-      margin-top: 20px;
-    }
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  color:white;
+  overflow-x:hidden;
+  background:black;
+}
 
-    .cards-container {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      margin: 20px;
-    }
+/* FUNDO GALÁCTICO */
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
+}
 
-    .card {
-      background: rgba(0,0,0,0.6);
-      margin: 15px;
-      padding: 15px;
-      border-radius: 15px;
-      width: 200px;
-      text-align: center;
-      box-shadow: 0 0 20px #00ff88, 0 0 40px #00ff88 inset;
-      position: relative;
-      overflow: hidden;
-      transition: transform 0.3s, box-shadow 0.3s;
-    }
+/* HEADER */
+header{
+  background:rgba(0,0,0,0.6);
+  padding:15px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  font-size:22px;
+  text-shadow:0 0 15px #00ffee;
+}
 
-    .card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 0 30px #00ff88, 0 0 50px #00ff88 inset;
-    }
+.cart-btn{
+  background:#00ffcc;
+  color:black;
+  padding:8px 12px;
+  border-radius:10px;
+  cursor:pointer;
+  font-weight:bold;
+}
 
-    .card img.background-img {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: translate(-50%, -50%);
-      opacity: 0.3;
-      z-index: 0;
-    }
+/* PRODUTOS */
+.container{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;
+  padding:20px;
+}
 
-    .card-content {
-      position: relative;
-      z-index: 1;
-    }
+.card{
+  background:rgba(0,0,0,0.75);
+  margin:12px;
+  padding:15px;
+  border-radius:18px;
+  width:200px;
+  box-shadow:0 0 20px #00ffcc;
+  transition:.3s;
+}
 
-    button {
-      background: #00ff88;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-      transition: 0.3s;
-    }
+.card:hover{ transform:scale(1.05); }
 
-    button:hover {
-      background: #00cc66;
-    }
+.card img{
+  width:100%;
+  border-radius:12px;
+}
 
-    @media (max-width: 600px) {
-      .cards-container {
-        flex-direction: column;
-        align-items: center;
-      }
-    }
+button{
+  background:linear-gradient(45deg,#00ffcc,#00ff88);
+  border:none;
+  padding:8px;
+  border-radius:10px;
+  font-weight:bold;
+  cursor:pointer;
+  width:100%;
+  margin-top:6px;
+}
 
-    /* Modal */
-    .modal {
-      display: none; 
-      position: fixed; 
-      z-index: 1000; 
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      overflow: auto;
-      background-color: rgba(0,0,0,0.8);
-      justify-content: center;
-      align-items: center;
-    }
+/* MODAL */
+.modal{
+  display:none;
+  position:fixed;
+  z-index:999;
+  width:100%;
+  height:100%;
+  background:rgba(0,0,0,.9);
+  justify-content:center;
+  align-items:center;
+}
 
-    .modal-content {
-      background-color: rgba(0,0,0,0.9);
-      padding: 20px;
-      border-radius: 15px;
-      width: 90%;
-      max-width: 400px;
-      text-align: left;
-      color: white;
-    }
+.modal-box{
+  background:#111;
+  padding:20px;
+  border-radius:15px;
+  width:340px;
+  box-shadow:0 0 25px #00ffcc;
+  max-height:90vh;
+  overflow:auto;
+}
 
-    .modal-content h2 {
-      text-align: center;
-      text-shadow: 1px 1px 5px black;
-    }
+input,select{
+  width:100%;
+  padding:8px;
+  margin:6px 0 10px 0;
+  border-radius:6px;
+  border:none;
+}
 
-    .modal-content label {
-      display: block;
-      margin: 10px 0 5px;
-    }
+.total{
+  font-size:18px;
+  color:#00ffcc;
+  margin:8px 0;
+}
 
-    .modal-content input, 
-    .modal-content select {
-      width: 100%;
-      padding: 8px;
-      border-radius: 6px;
-      border: none;
-      margin-bottom: 10px;
-    }
+.pix{
+  background:#000;
+  padding:10px;
+  border-radius:8px;
+  text-align:center;
+  margin-top:8px;
+  color:#00ffcc;
+  font-weight:bold;
+}
 
-    .modal-content button {
-      width: 100%;
-      margin-top: 10px;
-    }
-
-    .close {
-      color: #ff5555;
-      float: right;
-      font-size: 24px;
-      cursor: pointer;
-    }
-
-  </style>
+.close{
+  background:red;
+}
+</style>
 </head>
+
 <body>
 
-<h1>🔥 Ultimate Fruits - Galáxia 🔥</h1>
+<canvas id="stars"></canvas>
 
-<div class="cards-container">
-
-  <div class="card">
-    <img class="background-img" src="https://i.imgur.com/xRix2sP.png" alt="Venom">
-    <div class="card-content">
-      <h2>Venom</h2>
-      <p>R$ 10,00</p>
-      <button onclick="openModal('Venom', 10)">Comprar</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <img class="background-img" src="https://i.imgur.com/3YJ0p6t.png" alt="Trex">
-    <div class="card-content">
-      <h2>Trex</h2>
-      <p>R$ 9,50</p>
-      <button onclick="openModal('Trex', 9.5)">Comprar</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <img class="background-img" src="https://i.imgur.com/vcZ0Qqg.png" alt="Shadow">
-    <div class="card-content">
-      <h2>Shadow</h2>
-      <p>R$ 8,00</p>
-      <button onclick="openModal('Shadow', 8)">Comprar</button>
-    </div>
-  </div>
-
-  <div class="card">
-    <img class="background-img" src="https://i.imgur.com/BOjQnPX.png" alt="Yeti">
-    <div class="card-content">
-      <h2>Yeti</h2>
-      <p>R$ 13,50</p>
-      <button onclick="openModal('Yeti', 13.5)">Comprar</button>
-    </div>
-  </div>
-
+<header>
+🔥 Ultimate Fruits 🔥
+<div class="cart-btn" onclick="abrirCarrinho()">
+🛒 (<span id="count">0</span>)
 </div>
+</header>
 
-<!-- Modal -->
-<div id="purchaseModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeModal()">&times;</span>
-    <h2 id="modalTitle">Comprar Produto</h2>
-    <form id="purchaseForm">
-      <label>Produto:</label>
-      <input type="text" id="productName" readonly>
-      
-      <label>Preço (R$):</label>
-      <input type="text" id="productPrice" readonly>
-      
-      <label>Nome Completo:</label>
-      <input type="text" id="fullName" required>
-      
-      <label>CPF:</label>
-      <input type="text" id="cpf" required placeholder="000.000.000-00">
-      
-      <label>Forma de Pagamento:</label>
-      <select id="paymentMethod" required>
-        <option value="">Selecione</option>
-        <option value="Pix">Pix</option>
-        <option value="Boleto">Boleto</option>
-        <option value="Cartão de Crédito">Cartão de Crédito</option>
-      </select>
-      
-      <button type="submit">Finalizar Compra</button>
-    </form>
+<div class="container" id="produtos"></div>
+
+<!-- MODAL -->
+<div class="modal" id="modal">
+  <div class="modal-box">
+    <h2>Finalizar Pedido</h2>
+
+    <div id="lista"></div>
+    <div class="total" id="total"></div>
+
+    <label>Nome</label>
+    <input id="nome">
+
+    <label>CPF</label>
+    <input>
+
+    <label>Pagamento</label>
+    <select onchange="mostrarPix(this.value)">
+      <option value="">Selecione</option>
+      <option value="pix">PIX</option>
+    </select>
+
+    <div id="pixArea" style="display:none;">
+      <div class="pix">
+        PIX: 46786167802
+        <br><br>
+        <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=46786167802">
+      </div>
+    </div>
+
+    <button onclick="finalizar()">Confirmar</button>
+    <button class="close" onclick="fecharCarrinho()">Fechar</button>
   </div>
 </div>
 
 <script>
-  const modal = document.getElementById("purchaseModal");
-  const productNameInput = document.getElementById("productName");
-  const productPriceInput = document.getElementById("productPrice");
+const produtos=[
+{name:"Venom",preco:10,img:"https://i.imgur.com/xRix2sP.png"},
+{name:"Trex",preco:9.5,img:"https://i.imgur.com/3YJ0p6t.png"},
+{name:"Shadow",preco:8,img:"https://i.imgur.com/vcZ0Qqg.png"},
+{name:"Yeti",preco:13.5,img:"https://i.imgur.com/BOjQnPX.png"}
+];
 
-  function openModal(name, price) {
-    productNameInput.value = name;
-    productPriceInput.value = price.toFixed(2);
-    modal.style.display = "flex";
-  }
+let carrinho=JSON.parse(localStorage.getItem("carrinho"))||[];
 
-  function closeModal() {
-    modal.style.display = "none";
-    document.getElementById("purchaseForm").reset();
-  }
+function salvar(){
+localStorage.setItem("carrinho",JSON.stringify(carrinho));
+}
 
-  // Fechar modal ao clicar fora
-  window.onclick = function(event) {
-    if (event.target == modal) {
-      closeModal();
-    }
-  }
+function renderProdutos(){
+let area=document.getElementById("produtos");
+area.innerHTML="";
+produtos.forEach((p,i)=>{
+area.innerHTML+=`
+<div class="card">
+<img src="${p.img}">
+<h3>${p.name}</h3>
+<p>R$ ${p.preco.toFixed(2)}</p>
+<button onclick="add(${i})">Adicionar</button>
+</div>
+`;
+});
+}
 
-  // Exemplo de envio do formulário
-  document.getElementById("purchaseForm").addEventListener("submit", function(e){
-    e.preventDefault();
-    alert("Compra finalizada com sucesso!\nProduto: " + productNameInput.value + "\nPreço: R$" + productPriceInput.value + "\nNome: " + document.getElementById("fullName").value + "\nCPF: " + document.getElementById("cpf").value + "\nPagamento: " + document.getElementById("paymentMethod").value);
-    closeModal();
-  });
+function add(i){
+carrinho.push(produtos[i]);
+salvar();
+updateCount();
+}
+
+function updateCount(){
+document.getElementById("count").innerText=carrinho.length;
+}
+
+function abrirCarrinho(){
+document.getElementById("modal").style.display="flex";
+renderCarrinho();
+}
+
+function fecharCarrinho(){
+document.getElementById("modal").style.display="none";
+}
+
+function renderCarrinho(){
+let lista=document.getElementById("lista");
+lista.innerHTML="";
+let total=0;
+carrinho.forEach(p=>{
+total+=p.preco;
+lista.innerHTML+=`• ${p.name} - R$ ${p.preco.toFixed(2)}<br>`;
+});
+document.getElementById("total").innerText="Total: R$ "+total.toFixed(2);
+}
+
+function mostrarPix(v){
+document.getElementById("pixArea").style.display=
+v==="pix"?"block":"none";
+}
+
+function finalizar(){
+alert("Pedido registrado! Após pagamento via PIX, aguarde.");
+carrinho=[];
+salvar();
+updateCount();
+fecharCarrinho();
+}
+
+renderProdutos();
+updateCount();
+
+/* FUNDO ESTRELAS */
+const canvas=document.getElementById("stars");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let stars=[];
+for(let i=0;i<150;i++){
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+size:Math.random()*2,
+speed:Math.random()*0.5
+});
+}
+
+function draw(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+ctx.fillStyle="white";
+stars.forEach(s=>{
+ctx.beginPath();
+ctx.arc(s.x,s.y,s.size,0,Math.PI*2);
+ctx.fill();
+s.y+=s.speed;
+if(s.y>canvas.height)s.y=0;
+});
+requestAnimationFrame(draw);
+}
+draw();
 </script>
 
 </body>
