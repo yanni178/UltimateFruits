@@ -1,69 +1,74 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <title>Ultimate Fruits</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <style>
-    body {
-      background: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
-      background-size: cover;
-      color: white;
-      font-family: Arial, sans-serif;
-      text-align: center;
-      margin: 0;
-      padding: 0;
-    }
-    h1 {
-      text-shadow: 2px 2px 8px #000;
-      margin-top: 20px;
-    }
-    .slider {
-      position: relative;
-      width: 90%;
-      max-width: 400px;
-      margin: 30px auto;
-      overflow: hidden;
-      border-radius: 15px;
-      box-shadow: 0 0 20px #00ff88;
-    }
-    .slides {
-      display: flex;
-      transition: transform 0.5s ease-in-out;
-    }
-    .card {
-      min-width: 100%;
-      background: rgba(0,0,0,0.7);
-      padding: 15px;
-      position: relative;
-      overflow: hidden;
-    }
-    .card img.background-img {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      transform: translate(-50%, -50%);
-      opacity: 0.3;
-      z-index: 0;
-    }
-    .card-content {
-      position: relative;
-      z-index: 1;
-    }
-    button {
-      background: #00ff88;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-  </style>
+<meta charset="UTF-8">
+<title>Ultimate Fruits</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+  body {
+    background: url('https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+    background-size: cover;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    color: white;
+    margin: 0;
+    padding: 0;
+  }
+  h1 {
+    margin-top: 20px;
+    text-shadow: 2px 2px 8px #000;
+  }
+  .slider {
+    position: relative;
+    width: 90%;
+    max-width: 400px;
+    margin: 30px auto;
+    overflow: hidden;
+    border-radius: 15px;
+    box-shadow: 0 0 20px #00ff88;
+  }
+  .slides {
+    display: flex;
+    transition: transform 1s ease-in-out;
+  }
+  .card {
+    min-width: 100%;
+    background: rgba(0,0,0,0.7);
+    padding: 15px;
+    position: relative;
+    overflow: hidden;
+  }
+  .card img.background-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+    z-index: 0;
+  }
+  .card-content {
+    position: relative;
+    z-index: 1;
+    animation: fadeIn 1s ease;
+  }
+  button {
+    background: #00ff88;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+  }
+
+  @keyframes fadeIn {
+    from {opacity: 0; transform: translateY(30px);}
+    to {opacity: 1; transform: translateY(0);}
+  }
+</style>
 </head>
 <body>
 
@@ -111,12 +116,15 @@
   const totalSlides = slides.children.length;
   let index = 0;
 
-  setInterval(() => {
-    index++;
-    if (index >= totalSlides) index = 0;
-    slides.style.transform = `translateX(-${index * 100}%)`;
-  }, 3000); // Muda a cada 3 segundos
+  window.addEventListener('load', () => { // Começa o slide quando a página abre
+    setInterval(() => {
+      index++;
+      if (index >= totalSlides) index = 0;
+      slides.style.transform = `translateX(-${index * 100}%)`;
+    }, 3000); // muda a cada 3 segundos
+  });
 </script>
 
 </body>
 </html>
+      
