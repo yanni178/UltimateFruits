@@ -2,11 +2,10 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Ultimate Fruits</title>
+<title>Ultimate Fruits - MAX ULTRA ADMIN</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <style>
-/* FUNDO GALÁCTICO ANIMADO */
 body{
   margin:0;
   font-family: Arial, sans-serif;
@@ -23,7 +22,6 @@ body{
   100%{background-position:0% 50%;}
 }
 
-/* HEADER */
 header{
   background:#00ff88;
   color:black;
@@ -33,7 +31,7 @@ header{
   text-shadow:0 0 5px #000;
 }
 
-/* CARDS DE PRODUTO */
+/* PRODUTOS */
 .container{
   display:flex;
   flex-wrap:wrap;
@@ -84,7 +82,7 @@ button:hover{
   background:#111;
   padding:20px;
   border-radius:15px;
-  width:320px;
+  width:350px;
   transform: scale(0);
   transition: transform 0.3s ease-in-out;
 }
@@ -118,38 +116,72 @@ input, select{
   padding:8px;
   width:150px;
 }
+
+/* CARRINHO */
+#carrinho{
+  position:fixed;
+  top:20px;
+  right:20px;
+  background:rgba(0,0,0,0.8);
+  padding:15px;
+  border-radius:15px;
+  width:220px;
+  max-height:80%;
+  overflow:auto;
+  box-shadow:0 0 20px #00ff88;
+}
+
+#carrinho h3{
+  margin-top:0;
+  text-align:center;
+}
+
+.carrinho-item{
+  display:flex;
+  justify-content:space-between;
+  margin:5px 0;
+}
+
+/* PAINEL ADMIN */
+#adminPanel{
+  position:fixed;
+  top:20px;
+  left:20px;
+  background:rgba(0,0,0,0.9);
+  padding:15px;
+  border-radius:15px;
+  width:300px;
+  max-height:90%;
+  overflow:auto;
+  box-shadow:0 0 25px #ffcc00;
+}
+
+#adminPanel h3{
+  margin-top:0;
+  text-align:center;
+  color:#ffcc00;
+}
+
+.admin-item{
+  margin-bottom:10px;
+  background:rgba(255,255,255,0.1);
+  padding:6px;
+  border-radius:8px;
+}
 </style>
 </head>
 <body>
 
-<header>🔥 Ultimate Fruits 🔥</header>
+<header>🔥 Ultimate Fruits - ULTRA MAX ADMIN 🔥</header>
 
-<div class="container">
+<div class="container" id="produtosContainer"></div>
 
-<div class="card">
-  <h3>Venom</h3>
-  <p>R$ 10,00</p>
-  <button onclick="comprar('Venom',10)">Comprar</button>
-</div>
-
-<div class="card">
-  <h3>Trex</h3>
-  <p>R$ 9,50</p>
-  <button onclick="comprar('Trex',9.5)">Comprar</button>
-</div>
-
-<div class="card">
-  <h3>Shadow</h3>
-  <p>R$ 8,00</p>
-  <button onclick="comprar('Shadow',8)">Comprar</button>
-</div>
-
-<div class="card">
-  <h3>Yeti</h3>
-  <p>R$ 13,50</p>
-  <button onclick="comprar('Yeti',13.5)">Comprar</button>
-</div>
-
+<!-- CARRINHO -->
+<div id="carrinho">
+<h3>Carrinho</h3>
+<div id="itensCarrinho"></div>
+<div class="valorTotal">Total: R$ <span id="total">0.00</span></div>
+<button onclick="finalizarCarrinho()">Finalizar Compra</button>
 </div>
 
 <!-- MODAL DE COMPRA -->
@@ -166,7 +198,7 @@ input, select{
       <option>Cartão</option>
     </select>
 
-    <button onclick="finalizar()">Finalizar Compra</button>
+    <button onclick="adicionarCarrinho()">Adicionar ao Carrinho</button>
     <button onclick="fechar()">Cancelar</button>
 
     <div class="pix-area" id="pixArea">
@@ -180,22 +212,49 @@ input, select{
   </div>
 </div>
 
+<!-- PAINEL ADMIN -->
+<div id="adminPanel">
+<h3>Admin Painel</h3>
+<div id="pedidosAdmin"></div>
+</div>
+
 <script>
+// PRODUTOS
+const produtos = [
+  {nome:"Venom", valor:10},
+  {nome:"Trex", valor:9.5},
+  {nome:"Shadow", valor:8},
+  {nome:"Yeti", valor:13.5}
+];
+
+// CARRINHO E PEDIDOS
+let carrinho = [];
+let pedidos = [];
 let valorAtual = 0;
 let produtoAtual = "";
 
+const container = document.getElementById("produtosContainer");
+produtos.forEach(p=>{
+  const div = document.createElement("div");
+  div.className="card";
+  div.innerHTML=`<h3>${p.nome}</h3>
+                 <p>R$ ${p.valor.toFixed(2)}</p>
+                 <button onclick="comprar('${p.nome}',${p.valor})">Comprar</button>`;
+  container.appendChild(div);
+});
+
+// ABRIR MODAL
 function comprar(nome,valor){
   produtoAtual = nome;
   valorAtual = valor;
 
   const modal = document.getElementById("modal");
-  modal.style.display = "flex";
+  modal.style.display="flex";
   modal.classList.add("show");
 
   document.getElementById("produtoNome").innerText = nome;
   document.getElementById("produtoValor").innerText = "Valor: R$ " + valor.toFixed(2);
 
-  // gera QR Code PIX simples
   let chave="46786167802";
   document.getElementById("qrImg").src=
     "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIX:"+chave+"-R$"+valor;
@@ -210,24 +269,93 @@ function fechar(){
   },300);
 }
 
-function finalizar(){
-  let nome=document.getElementById("nome").value.trim();
+function adicionarCarrinho(){
+  let nomeUser=document.getElementById("nome").value.trim();
   let cpf=document.getElementById("cpf").value.trim();
-  let pagamento=document.getElementById("pagamento").value;
-
-  if(!nome || !cpf){
+  if(!nomeUser || !cpf){
     alert("Preencha Nome e CPF!");
     return;
   }
 
+  carrinho.push({produto:produtoAtual,valor:valorAtual});
+  atualizarCarrinho();
+  fechar();
+}
+
+// ATUALIZA CARRINHO
+function atualizarCarrinho(){
+  const itens = document.getElementById("itensCarrinho");
+  itens.innerHTML="";
+  let total = 0;
+  carrinho.forEach((item,index)=>{
+    total += item.valor;
+    const div = document.createElement("div");
+    div.className="carrinho-item";
+    div.innerHTML=`<span>${item.produto} R$${item.valor.toFixed(2)}</span>
+                   <button onclick="remover(${index})">❌</button>`;
+    itens.appendChild(div);
+  });
+  document.getElementById("total").innerText = total.toFixed(2);
+}
+
+function remover(index){
+  carrinho.splice(index,1);
+  atualizarCarrinho();
+}
+
+// FINALIZAR CARRINHO
+function finalizarCarrinho(){
+  if(carrinho.length===0){
+    alert("Carrinho vazio!");
+    return;
+  }
+
+  let nomeUser=document.getElementById("nome").value.trim();
+  let cpf=document.getElementById("cpf").value.trim();
+  let pagamento=document.getElementById("pagamento").value;
+
+  if(!nomeUser || !cpf){
+    alert("Preencha Nome e CPF!");
+    return;
+  }
+
+  // ADICIONA PEDIDO NO ADMIN
+  pedidos.push({
+    nome:nomeUser,
+    cpf:cpf,
+    itens:[...carrinho],
+    total:carrinho.reduce((a,b)=>a+b.valor,0),
+    pagamento:pagamento
+  });
+  atualizarAdmin();
+
   if(pagamento==="PIX"){
     document.getElementById("pixArea").style.display="block";
   } else{
-    alert("✅ Compra no cartão simulada com sucesso!");
-    fechar();
+    alert(`✅ Compra no cartão simulada com sucesso!\nTotal: R$ ${carrinho.reduce((a,b)=>a+b.valor,0).toFixed(2)}`);
+    carrinho=[];
+    atualizarCarrinho();
   }
 }
 
+// ATUALIZA PAINEL ADMIN
+function atualizarAdmin(){
+  const painel = document.getElementById("pedidosAdmin");
+  painel.innerHTML="";
+  pedidos.forEach((p,i)=>{
+    const div=document.createElement("div");
+    div.className="admin-item";
+    div.innerHTML=`<b>Pedido ${i+1}</b><br>
+                   Nome: ${p.nome}<br>
+                   CPF: ${p.cpf}<br>
+                   Itens: ${p.itens.map(it=>it.produto).join(", ")}<br>
+                   Total: R$ ${p.total.toFixed(2)}<br>
+                   Pagamento: ${p.pagamento}`;
+    painel.appendChild(div);
+  });
+}
+
+// PIX
 function copiarPix(){
   navigator.clipboard.writeText("46786167802");
   alert("PIX copiado!");
