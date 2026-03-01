@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Ultimate Fruits • Admin</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<style>
+body{
+  margin:0;
+  font-family:Arial, sans-serif;
+  background:#0a0a0a;
+  color:white;
+}
+
+/* login */
+#loginBox{
+  position:fixed;
+  inset:0;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:#000;
+}
+
+.login-card{
+  background:#111;
+  padding:30px;
+  border-radius:16px;
+  text-align:center;
+  box-shadow:0 0 25px #00ff88;
+  width:300px;
+}
+
+input{
+  width:100%;
+  padding:10px;
+  margin:8px 0;
+  border-radius:6px;
+  border:none;
+}
+
+button{
+  background:#00ff88;
+  border:none;
+  padding:10px;
+  border-radius:8px;
+  font-weight:bold;
+  cursor:pointer;
+  width:100%;
+}
+
+/* painel */
+#painel{
+  display:none;
+  padding:20px;
+}
+
+.topo{
+  font-size:24px;
+  margin-bottom:20px;
+}
+
+.card{
+  background:#111;
+  padding:15px;
+  border-radius:12px;
+  margin-bottom:15px;
+  box-shadow:0 0 15px #00ff88;
+}
+
+.pedido{
+  border-bottom:1px solid #333;
+  padding:8px 0;
+}
+</style>
+</head>
+
+<body>
+
+<!-- LOGIN -->
+<div id="loginBox">
+  <div class="login-card">
+    <h2>🔒 Admin</h2>
+    <input id="user" placeholder="Usuário">
+    <input id="pass" type="password" placeholder="Senha">
+    <button onclick="login()">Entrar</button>
+  </div>
+</div>
+
+<!-- PAINEL -->
+<div id="painel">
+
+  <div class="topo">🔥 Ultimate Fruits • Painel</div>
+
+  <div class="card">
+    <h3>Total vendido</h3>
+    <p id="totalVendido">R$ 0,00</p>
+  </div>
+
+  <div class="card">
+    <h3>Pedidos</h3>
+    <div id="listaPedidos"></div>
+  </div>
+
+  <div class="card">
+    <button onclick="limparPedidos()">🗑️ Limpar pedidos</button>
+  </div>
+
+</div>
+
+<script>
+const ADMIN_USER="admin";
+const ADMIN_PASS="1234";
+
+function login(){
+  const u=document.getElementById("user").value;
+  const p=document.getElementById("pass").value;
+
+  if(u===ADMIN_USER && p===ADMIN_PASS){
+    document.getElementById("loginBox").style.display="none";
+    document.getElementById("painel").style.display="block";
+    carregarPedidos();
+  }else{
+    alert("Login inválido");
+  }
+}
+
+function carregarPedidos(){
+  const pedidos=JSON.parse(localStorage.getItem("pedidos")||"[]");
+  const lista=document.getElementById("listaPedidos");
+  const totalEl=document.getElementById("totalVendido");
+
+  lista.innerHTML="";
+  let total=0;
+
+  pedidos.forEach(p=>{
+    const div=document.createElement("div");
+    div.className="pedido";
+    div.textContent=`${p.nome} • R$ ${p.total.toFixed(2)}`;
+    lista.appendChild(div);
+    total+=p.total;
+  });
+
+  totalEl.textContent="R$ "+total.toFixed(2);
+}
+
+function limparPedidos(){
+  localStorage.removeItem("pedidos");
+  carregarPedidos();
+}
+</script>
+
+</body>
+</html>
+    
