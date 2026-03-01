@@ -2,207 +2,230 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Ultimate Fruits</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UltimateFruits</title>
 
 <style>
+/* ===== FUNDO GALÁCTICO ===== */
 body {
   margin: 0;
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
   color: white;
-  text-align: center;
-  background: url('https://images.unsplash.com/photo-1549921296-3a6b0d1d7a86?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+  background: url("https://images.unsplash.com/photo-1462331940025-496dfbfc7564") no-repeat center center fixed;
   background-size: cover;
 }
 
+/* ===== HEADER ===== */
 header {
-  background: rgba(0,0,0,0.6);
-  padding: 20px;
+  background: rgba(0,0,0,0.7);
+  padding: 15px;
+  text-align: center;
   font-size: 28px;
   font-weight: bold;
-  text-shadow: 0 0 10px #00ffcc;
 }
 
-.cards-container {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+/* ===== PRODUTOS ===== */
+.container {
   padding: 20px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 20px;
 }
 
-.card {
+.produto {
   background: rgba(0,0,0,0.75);
-  margin: 15px;
   padding: 15px;
-  border-radius: 18px;
-  width: 220px;
-  box-shadow: 0 0 20px #00ffcc;
-  transition: 0.3s;
-}
-
-.card:hover {
-  transform: scale(1.05);
-}
-
-.card img {
-  width: 100%;
   border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 0 15px rgba(0,0,0,0.5);
 }
 
-button {
-  background: linear-gradient(45deg,#00ffcc,#00ff88);
-  border: none;
-  padding: 10px 20px;
+.produto img {
+  width: 100%;
   border-radius: 10px;
+}
+
+.produto button {
+  margin-top: 10px;
+  padding: 10px;
+  border: none;
+  background: #00ff88;
+  color: black;
+  font-weight: bold;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.produto button:hover {
+  background: #00cc6a;
+}
+
+/* ===== CARRINHO ===== */
+#carrinho {
+  position: fixed;
+  right: -350px;
+  top: 0;
+  width: 320px;
+  height: 100%;
+  background: #111;
+  padding: 20px;
+  transition: 0.4s;
+  overflow-y: auto;
+  z-index: 999;
+}
+
+#carrinho.ativo {
+  right: 0;
+}
+
+#carrinho h2 {
+  margin-top: 0;
+}
+
+.item-carrinho {
+  border-bottom: 1px solid #333;
+  padding: 8px 0;
+}
+
+.total {
+  font-size: 20px;
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+/* ===== BOTÃO COMPRAR ===== */
+#btnComprar {
+  width: 100%;
+  padding: 12px;
+  background: #00ff88;
+  border: none;
+  border-radius: 8px;
   font-weight: bold;
   cursor: pointer;
-  margin-top: 10px;
 }
 
-/* MODAL */
-.modal {
+/* ===== MODAL PAGAMENTO ===== */
+#modalPagamento {
   display: none;
   position: fixed;
-  z-index: 999;
-  left: 0;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background: rgba(0,0,0,0.8);
   justify-content: center;
   align-items: center;
+  z-index: 1000;
 }
 
 .modal-box {
   background: #111;
   padding: 25px;
-  border-radius: 15px;
+  border-radius: 12px;
   width: 320px;
-  text-align: left;
-  box-shadow: 0 0 25px #00ffcc;
 }
 
-.modal-box h2 {
-  text-align: center;
-}
-
-input, select {
+.modal-box input,
+.modal-box select {
   width: 100%;
-  padding: 8px;
-  margin: 6px 0 12px 0;
+  padding: 10px;
+  margin: 6px 0;
   border-radius: 6px;
   border: none;
-}
-
-.pix-box {
-  background: #000;
-  padding: 10px;
-  border-radius: 8px;
-  text-align: center;
-  margin-top: 10px;
-  color: #00ffcc;
-  font-weight: bold;
-}
-
-.close-btn {
-  background: red;
-  width: 100%;
 }
 </style>
 </head>
 
 <body>
 
-<header>🔥 Ultimate Fruits 🔥</header>
+<header>🚀 UltimateFruits</header>
 
-<div class="cards-container">
+<!-- ===== PRODUTOS ===== -->
+<div class="container">
 
-  <div class="card">
-    <img src="https://i.imgur.com/xRix2sP.png">
-    <h3>Venom</h3>
-    <p>R$ 10,00</p>
-    <button onclick="abrirModal('Venom', '10,00')">Comprar</button>
-  </div>
+<div class="produto">
+<img src="https://static.wikia.nocookie.net/blox-fruits/images/5/5d/Yeti_Fiend.png" alt="">
+<h3>Conta Yeti Fiend</h3>
+<p>R$ 29,90</p>
+<button onclick="adicionarAoCarrinho('Conta Yeti Fiend', 29.90)">Adicionar</button>
+</div>
 
-  <div class="card">
-    <img src="https://i.imgur.com/3YJ0p6t.png">
-    <h3>Trex</h3>
-    <p>R$ 9,50</p>
-    <button onclick="abrirModal('Trex', '9,50')">Comprar</button>
-  </div>
-
-  <div class="card">
-    <img src="https://i.imgur.com/vcZ0Qqg.png">
-    <h3>Shadow</h3>
-    <p>R$ 8,00</p>
-    <button onclick="abrirModal('Shadow', '8,00')">Comprar</button>
-  </div>
-
-  <div class="card">
-    <img src="https://i.imgur.com/BOjQnPX.png">
-    <h3>Yeti</h3>
-    <p>R$ 13,50</p>
-    <button onclick="abrirModal('Yeti', '13,50')">Comprar</button>
-  </div>
+<div class="produto">
+<img src="https://static.wikia.nocookie.net/blox-fruits/images/5/5d/Yeti_Fiend.png" alt="">
+<h3>Conta Full Frutas</h3>
+<p>R$ 49,90</p>
+<button onclick="adicionarAoCarrinho('Conta Full Frutas', 49.90)">Adicionar</button>
+</div>
 
 </div>
 
-<!-- MODAL PAGAMENTO -->
-<div class="modal" id="modal">
+<!-- ===== CARRINHO ===== -->
+<div id="carrinho">
+<h2>🛒 Carrinho</h2>
+<div id="listaCarrinho"></div>
+<div class="total">Total: R$ <span id="total">0.00</span></div>
+<br>
+<button id="btnComprar" onclick="abrirPagamento()">Finalizar Compra</button>
+</div>
+
+<!-- ===== MODAL ===== -->
+<div id="modalPagamento">
   <div class="modal-box">
-    <h2>Pagamento</h2>
+    <h3>Pagamento</h3>
 
-    <label>Produto</label>
-    <input id="produto" disabled>
+    <input type="text" placeholder="Seu nome">
+    <input type="text" placeholder="CPF">
 
-    <label>Preço</label>
-    <input id="preco" disabled>
-
-    <label>Nome</label>
-    <input placeholder="Seu nome">
-
-    <label>CPF</label>
-    <input placeholder="000.000.000-00">
-
-    <label>Forma de pagamento</label>
-    <select onchange="mostrarPix(this.value)">
-      <option value="">Selecione</option>
-      <option value="pix">PIX</option>
-      <option value="cartao">Cartão</option>
+    <select>
+      <option>PIX</option>
+      <option>Cartão</option>
     </select>
 
-    <div id="pixArea" style="display:none;">
-      <div class="pix-box">
-        PIX: 46786167802
-      </div>
-    </div>
+    <p><b>PIX:</b> 46786167802</p>
 
-    <button onclick="finalizar()">Finalizar Compra</button>
-    <button class="close-btn" onclick="fecharModal()">Fechar</button>
+    <button id="btnComprar" onclick="fecharPagamento()">Confirmar</button>
   </div>
 </div>
 
 <script>
-function abrirModal(prod, preco) {
-  document.getElementById("modal").style.display = "flex";
-  document.getElementById("produto").value = prod;
-  document.getElementById("preco").value = "R$ " + preco;
+let carrinho = [];
+let total = 0;
+
+function adicionarAoCarrinho(nome, preco) {
+  carrinho.push({nome, preco});
+  total += preco;
+  atualizarCarrinho();
+  abrirCarrinho();
 }
 
-function fecharModal() {
-  document.getElementById("modal").style.display = "none";
+function atualizarCarrinho() {
+  const lista = document.getElementById("listaCarrinho");
+  lista.innerHTML = "";
+
+  carrinho.forEach(item => {
+    const div = document.createElement("div");
+    div.className = "item-carrinho";
+    div.innerText = item.nome + " - R$ " + item.preco.toFixed(2);
+    lista.appendChild(div);
+  });
+
+  document.getElementById("total").innerText = total.toFixed(2);
 }
 
-function mostrarPix(valor) {
-  document.getElementById("pixArea").style.display =
-    valor === "pix" ? "block" : "none";
+function abrirCarrinho() {
+  document.getElementById("carrinho").classList.add("ativo");
 }
 
-function finalizar() {
-  alert("Pedido enviado! Após o pagamento via PIX, aguarde a entrega.");
-  fecharModal();
+function abrirPagamento() {
+  document.getElementById("modalPagamento").style.display = "flex";
+}
+
+function fecharPagamento() {
+  document.getElementById("modalPagamento").style.display = "none";
+  alert("Pedido enviado! ✅");
 }
 </script>
 
 </body>
 </html>
+    
