@@ -2,280 +2,98 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Ultimate Fruits - Supremo Ultra Mega</title>
+<title>Ultimate Fruits - UKTIMA FINAL SUPREMA</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  /* Fundo galáctico animado */
-  body {
-    background: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
-    background-size: cover;
-    color: white;
-    font-family: Arial, sans-serif;
-    text-align: center;
-    margin: 0;
-    padding: 0;
-    overflow-x: hidden;
-    animation: bgAnimation 30s infinite alternate;
-  }
-
-  @keyframes bgAnimation {
-    0% { background-position: center top; }
-    50% { background-position: center center; }
-    100% { background-position: center bottom; }
-  }
-
-  h1 {
-    text-shadow: 2px 2px 10px #000;
-    margin-top: 20px;
-  }
-
-  .cards-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    margin: 20px;
-  }
-
-  .card {
-    background: rgba(0,0,0,0.7);
-    margin: 15px;
-    padding: 15px;
-    border-radius: 15px;
-    width: 200px;
-    text-align: center;
-    box-shadow: 0 0 20px #00ff88;
-    position: relative;
-    overflow: hidden;
-    transform: scale(0);
-    animation: cardAppear 0.5s forwards;
-    transition: transform 0.3s, box-shadow 0.3s;
-  }
-
-  .card:nth-child(1) { animation-delay: 0.2s; }
-  .card:nth-child(2) { animation-delay: 0.4s; }
-  .card:nth-child(3) { animation-delay: 0.6s; }
-  .card:nth-child(4) { animation-delay: 0.8s; }
-
-  @keyframes cardAppear {
-    to { transform: scale(1); }
-  }
-
-  .card:hover {
-    transform: scale(1.05);
-    box-shadow: 0 0 30px #00ff88;
-  }
-
-  .card img.background-img {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transform: translate(-50%, -50%);
-    opacity: 0.3;
-    z-index: 0;
-  }
-
-  .card-content { position: relative; z-index: 1; }
-
-  button {
-    background: #00ff88;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 8px;
-    font-weight: bold;
-    cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s;
-  }
-
-  button:hover { background: #00cc66; }
-
-  /* Modal Carrinho */
-  .modal {
-    display: none;
-    position: fixed;
-    z-index: 100;
-    left: 0; top: 0;
-    width: 100%; height: 100%;
-    overflow: auto;
-    background: rgba(0,0,0,0.85);
-    backdrop-filter: blur(5px);
-    animation: fadeIn 0.5s;
-  }
-
-  @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
-
-  .modal-content {
-    background-color: #111;
-    margin: 5% auto;
-    padding: 20px;
-    border: 2px solid #00ff88;
-    width: 90%;
-    max-width: 500px;
-    border-radius: 10px;
-    color: white;
-    text-align: left;
-    position: relative;
-    animation: slideDown 0.5s;
-  }
-
-  @keyframes slideDown { from {transform: translateY(-50px);} to {transform: translateY(0);} }
-
-  .close {
-    color: #00ff88;
-    float: right;
-    font-size: 28px;
-    font-weight: bold;
-    cursor: pointer;
-  }
-
-  .cart-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #00ff88; }
-  input, select { width: 100%; margin: 5px 0 15px 0; padding: 8px; border-radius: 5px; border: none; outline: none; }
-  .qr-code { text-align: center; margin: 15px 0; }
-
-  /* Painel Admin escondido */
-  #adminPanel {
-    position: fixed;
-    top: 10px; left: 10px;
-    background: rgba(0,0,0,0.9);
-    padding: 10px;
-    border: 2px solid #ffdd00;
-    border-radius: 8px;
-    display: none;
-    color: #ffdd00;
-    z-index: 200;
-  }
-
-  #adminPanel h3 { margin: 0 0 10px 0; font-size: 16px; }
+body{margin:0;padding:0;font-family:Arial,sans-serif;overflow-x:hidden;color:white;background:#0a001f;}
+#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
+h1{text-align:center;font-size:2em;animation:titleGlow 3s infinite alternate;margin-top:20px;}
+@keyframes titleGlow{0%{text-shadow:0 0 10px #ff00ff,0 0 20px #ff00ff,0 0 30px #ff66ff;}50%{text-shadow:0 0 10px #00ffff,0 0 20px #66ffcc,0 0 30px #ffcc00;}100%{text-shadow:0 0 10px #ff66ff,0 0 20px #ff00ff,0 0 30px #ff99ff;}}
+.cards-container{display:flex;flex-wrap:wrap;justify-content:center;margin:20px;}
+.card{background: rgba(30,0,50,0.85);margin:15px;padding:20px;border-radius:15px;width:200px;text-align:center;box-shadow:0 0 25px #ff66ff;transform:translateY(-50px);opacity:0;animation:slideUp 0.6s forwards;transition:transform 0.3s,box-shadow 0.3s;position:relative;}
+.card:hover{transform:scale(1.08);box-shadow:0 0 60px #ff99ff;}
+.card-content{position:relative;z-index:1;}
+@keyframes slideUp{to{transform:translateY(0);opacity:1;}}
+button{background:#ff66ff;border:none;padding:10px 20px;border-radius:8px;font-weight:bold;cursor:pointer;animation:buttonGlow 2s infinite alternate;}
+button:hover{background:#cc33cc;}
+@keyframes buttonGlow{0%{box-shadow:0 0 10px #ff66ff;}25%{box-shadow:0 0 15px #00ffff;}50%{box-shadow:0 0 20px #66ffcc;}75%{box-shadow:0 0 25px #ffcc00;}100%{box-shadow:0 0 30px #ff00ff;}}
+#cartSidebar{position:fixed;top:0;right:0;width:300px;height:100%;background:rgba(20,0,40,0.95);border-left:2px solid #ff66ff;padding:20px;overflow-y:auto;box-shadow:-5px 0 20px #ff66ff;}
+#cartSidebar h2{text-align:center;}
+.cart-item{margin-bottom:15px;border-bottom:1px solid #ff66ff;padding-bottom:10px;}
+input,select{width:100%;margin:5px 0 15px 0;padding:8px;border-radius:5px;border:none;outline:none;}
+.qr-code{text-align:center;margin:15px 0;cursor:pointer;}
+#adminPanel{position:fixed;top:10px;left:10px;background:rgba(0,0,0,0.9);padding:10px;border:2px solid #ffdd00;border-radius:8px;display:none;color:#ffdd00;z-index:200;max-width:400px;animation: fadeInPanel 0.5s;}
+@keyframes fadeInPanel{from{opacity:0; transform:translateX(-20px);} to{opacity:1; transform:translateX(0);}}
 </style>
 </head>
 <body>
+<canvas id="starCanvas"></canvas>
+<h1>🔥 Ultimate Fruits - UKTIMA FINAL SUPREMA 🔥</h1>
+<div id="cards" class="cards-container"></div>
 
-<h1>🔥 Ultimate Fruits 🔥</h1>
-
-<div class="cards-container">
-  <div class="card">
-    <img class="background-img" src="https://i.imgur.com/xRix2sP.png" alt="Venom">
-    <div class="card-content"><h2>Venom</h2><p>R$ 10,00</p><button onclick="addToCart('Venom',10)">Comprar</button></div>
-  </div>
-  <div class="card">
-    <img class="background-img" src="https://i.imgur.com/3YJ0p6t.png" alt="Trex">
-    <div class="card-content"><h2>Trex</h2><p>R$ 9,50</p><button onclick="addToCart('Trex',9.5)">Comprar</button></div>
-  </div>
-  <div class="card">
-    <img class="background-img" src="https://i.imgur.com/vcZ0Qqg.png" alt="Shadow">
-    <div class="card-content"><h2>Shadow</h2><p>R$ 8,00</p><button onclick="addToCart('Shadow',8)">Comprar</button></div>
-  </div>
-  <div class="card">
-    <img class="background-img" src="https://i.imgur.com/BOjQnPX.png" alt="Tiger">
-    <div class="card-content"><h2>Tiger</h2><p>R$ 13,50</p><button onclick="addToCart('Tiger',13.5)">Comprar</button></div>
-  </div>
+<div id="cartSidebar">
+<h2>Carrinho</h2>
+<div id="cartItems"></div>
+<h3>Dados do Cliente</h3>
+<input type="text" id="clientName" placeholder="Nome completo">
+<input type="text" id="clientCPF" placeholder="CPF">
+<select id="paymentMethod">
+<option value="pix">PIX</option>
+<option value="boleto">Boleto</option>
+<option value="cartao">Cartão</option>
+</select>
+<div class="qr-code" id="pixQRCode" onclick="copyPix()">Clique para copiar PIX</div>
+<button onclick="checkout()">Finalizar Compra</button>
 </div>
 
-<!-- Modal Carrinho -->
-<div id="cartModal" class="modal">
-  <div class="modal-content">
-    <span class="close" onclick="closeCart()">&times;</span>
-    <h2>Carrinho</h2>
-    <div id="cartItems"></div>
-
-    <h3>Dados do Cliente</h3>
-    <input type="text" id="clientName" placeholder="Nome completo">
-    <input type="text" id="clientCPF" placeholder="CPF">
-    <select id="paymentMethod">
-      <option value="pix">PIX</option>
-      <option value="boleto">Boleto</option>
-      <option value="cartao">Cartão</option>
-    </select>
-
-    <div class="qr-code" id="pixQRCode"></div>
-    <button onclick="checkout()">Finalizar Compra</button>
-  </div>
-</div>
-
-<!-- Painel Admin -->
-<div id="adminPanel">
-  <h3>Painel Admin</h3>
-  <div id="adminOrders"></div>
-</div>
+<div id="adminPanel"><h3>Painel Admin</h3><div id="adminOrders"></div></div>
 
 <script>
-let cart = [];
-const adminPassword = "supremo123"; // senha para ativar painel admin
-let adminVisible = false;
-
-// Adicionar ao carrinho
-function addToCart(name, price){
-  cart.push({name, price});
-  openCart();
-}
-
-// Abrir modal carrinho
-function openCart(){
-  document.getElementById('cartModal').style.display = 'block';
-  renderCart();
-}
-
-// Fechar modal
-function closeCart(){ document.getElementById('cartModal').style.display = 'none'; }
-
-// Renderizar carrinho
-function renderCart(){
-  const container = document.getElementById('cartItems');
-  container.innerHTML = '';
-  cart.forEach(item=>{
-    const div = document.createElement('div');
-    div.className = 'cart-item';
-    div.textContent = `${item.name} - R$ ${item.price.toFixed(2)}`;
-    container.appendChild(div);
-  });
-}
-
-// Checkout
-function checkout(){
-  const name = document.getElementById('clientName').value;
-  const cpf = document.getElementById('clientCPF').value;
-  const method = document.getElementById('paymentMethod').value;
-
-  if(!name || !cpf){ alert('Preencha Nome e CPF!'); return; }
-
-  let total = cart.reduce((acc,item)=> acc+item.price,0);
-
-  if(method==='pix'){
-    const pixKey = "46786167802";
-    document.getElementById('pixQRCode').innerHTML = `
-      <p>PIX: ${pixKey}</p>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?data=${pixKey}&size=150x150" alt="QR Code PIX">
-    `;
-    alert(`PIX gerado! Total: R$ ${total.toFixed(2)}`);
-  } else {
-    alert(`Pagamento ${method} simulado! Total: R$ ${total.toFixed(2)}`);
-  }
-
-  if(adminVisible){
-    const adminDiv = document.getElementById('adminOrders');
-    const orderDiv = document.createElement('div');
-    orderDiv.textContent = `Cliente: ${name}, CPF: ${cpf}, Método: ${method}, Total: R$ ${total.toFixed(2)}, Itens: ${cart.map(i=>i.name).join(', ')}`;
-    adminDiv.appendChild(orderDiv);
-  }
-
-  cart = [];
-  renderCart();
-}
-
-// Ativar painel admin
-document.addEventListener('keydown', (e)=>{
-  if(e.ctrlKey && e.altKey && e.key==='A'){
-    const pass = prompt('Senha Admin:');
-    if(pass===adminPassword){
-      adminVisible = !adminVisible;
-      document.getElementById('adminPanel').style.display = adminVisible?'block':'none';
-    } else alert('Senha incorreta!');
-  }
+// Produtos ordenados por preço
+const products=[{name:'Shadow',price:8},{name:'Trex',price:9.5},{name:'Venom',price:10},{name:'Tiger',price:13.5}];
+products.sort((a,b)=>a.price-b.price);
+const cardsContainer=document.getElementById('cards');
+products.forEach((p,i)=>{
+  const card=document.createElement('div');card.className='card';card.style.animationDelay=`${i*0.2}s`;
+  card.innerHTML=`<div class="card-content"><h2>${p.name}</h2><p>R$ ${p.price.toFixed(2)}</p><button onclick="addToCart('${p.name}',${p.price},this)">Comprar</button></div>`;
+  cardsContainer.appendChild(card);
 });
-</script>
 
+// Canvas estrelas + cometas
+const canvas=document.getElementById('starCanvas');const ctx=canvas.getContext('2d');let stars=[],particles=[];
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+window.addEventListener('resize',resizeCanvas);resizeCanvas();
+for(let i=0;i<200;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.5,dx:(Math.random()-0.5)*0.2,dy:(Math.random()-0.5)*0.2});}
+function animateStars(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  stars.forEach(s=>{s.x+=s.dx;s.y+=s.dy;if(s.x>canvas.width)s.x=0;if(s.x<0)s.x=canvas.width;if(s.y>canvas.height)s.y=0;if(s.y<0)s.y=canvas.height;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();});
+  particles.forEach((p,i)=>{p.x+=p.dx;p.y+=p.dy;p.r*=0.9;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();if(p.r<0.5)particles.splice(i,1);});
+  requestAnimationFrame(animateStars);
+}
+animateStars();
+
+// Carrinho + rastro cometa + Admin
+let cart=[]; const adminPassword='supremo123'; let adminVisible=false;
+function addToCart(name,price,btn){
+  cart.push({name,price});renderCart();
+  const btnRect=btn.getBoundingClientRect();
+  const cartRect=document.getElementById('cartSidebar').getBoundingClientRect();
+  // Rastro cometa
+  for(let i=0;i<30;i++){
+    particles.push({x:btnRect.left+btn.offsetWidth/2,y:btnRect.top+btn.offsetHeight/2+window.scrollY,r:Math.random()*4+2,
+      dx:(cartRect.left-btnRect.left)/30+(Math.random()-0.5)*2,
+      dy:(cartRect.top-btnRect.top)/30+(Math.random()-0.5)*2,
+      color:`hsl(${Math.random()*360},100%,50%)`});
+  }
+  // Som espacial
+  const audio=new Audio('https://freesound.org/data/previews/331/331912_3248244-lq.mp3');audio.volume=0.3;audio.play();
+}
+function renderCart(){const container=document.getElementById('cartItems');container.innerHTML='';cart.forEach(item=>{const div=document.createElement('div');div.className='cart-item';div.textContent=`${item.name} - R$ ${item.price.toFixed(2)}`;container.appendChild(div);});}
+function checkout(){const name=document.getElementById('clientName').value;const cpf=document.getElementById('clientCPF').value;const method=document.getElementById('paymentMethod').value;if(!name||!cpf){alert('Preencha Nome e CPF!');return;}let total=cart.reduce((a,b)=>a+b.price,0);if(method==='pix'){const pixKey='46786167802';document.getElementById('pixQRCode').innerHTML=`<p>PIX: ${pixKey}</p><img src="https://api.qrserver.com/v1/create-qr-code/?data=${pixKey}&size=150x150">`;alert(`PIX gerado! Total: R$ ${total.toFixed(2)}`);}else{alert(`Pagamento ${method} simulado! Total: R$ ${total.toFixed(2)}`);}
+if(adminVisible){const adminDiv=document.getElementById('adminOrders');const order=document.createElement('div');order.style.animation='fadeIn 0.5s';order.textContent=`Cliente: ${name}, CPF: ${cpf}, Método: ${method}, Total: R$ ${total.toFixed(2)}, Itens: ${cart.map(i=>i.name).join(', ')}`;adminDiv.appendChild(order);}
+cart=[];renderCart();}
+function copyPix(){navigator.clipboard.writeText('46786167802').then(()=>alert('PIX copiado!'));}
+document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.altKey&&e.key==='A'){const pass=prompt('Senha Admin:');if(pass===adminPassword){adminVisible=!adminVisible;document.getElementById('adminPanel').style.display=adminVisible?'block':'none';}else alert('Senha incorreta!');}});
+</script>
 </body>
 </html>
