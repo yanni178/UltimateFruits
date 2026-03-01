@@ -2,364 +2,279 @@
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Ultimate Fruits - MAX ULTRA ADMIN</title>
+<title>Ultimate Fruits - Supremo Ultra Mega</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <style>
-body{
-  margin:0;
-  font-family: Arial, sans-serif;
-  background: linear-gradient(270deg, #0f2027, #203a43, #2c5364);
-  background-size: 600% 600%;
-  animation: gradientBG 15s ease infinite;
-  color:white;
-  text-align:center;
-}
+  /* Fundo galáctico animado */
+  body {
+    background: url('https://images.unsplash.com/photo-1446776811953-b23d57bd21aa?auto=format&fit=crop&w=1500&q=80') no-repeat center center fixed;
+    background-size: cover;
+    color: white;
+    font-family: Arial, sans-serif;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+    animation: bgAnimation 30s infinite alternate;
+  }
 
-@keyframes gradientBG {
-  0%{background-position:0% 50%;}
-  50%{background-position:100% 50%;}
-  100%{background-position:0% 50%;}
-}
+  @keyframes bgAnimation {
+    0% { background-position: center top; }
+    50% { background-position: center center; }
+    100% { background-position: center bottom; }
+  }
 
-header{
-  background:#00ff88;
-  color:black;
-  padding:15px;
-  font-size:24px;
-  font-weight:bold;
-  text-shadow:0 0 5px #000;
-}
+  h1 {
+    text-shadow: 2px 2px 10px #000;
+    margin-top: 20px;
+  }
 
-/* PRODUTOS */
-.container{
-  display:flex;
-  flex-wrap:wrap;
-  justify-content:center;
-  padding:20px;
-}
+  .cards-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    margin: 20px;
+  }
 
-.card{
-  background: rgba(0,0,0,0.75);
-  margin:15px;
-  padding:15px;
-  width:220px;
-  border-radius:15px;
-  box-shadow: 0 0 20px #00ff88;
-  transition: transform 0.3s, box-shadow 0.3s;
-}
+  .card {
+    background: rgba(0,0,0,0.7);
+    margin: 15px;
+    padding: 15px;
+    border-radius: 15px;
+    width: 200px;
+    text-align: center;
+    box-shadow: 0 0 20px #00ff88;
+    position: relative;
+    overflow: hidden;
+    transform: scale(0);
+    animation: cardAppear 0.5s forwards;
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
 
-.card:hover{
-  transform: scale(1.05) rotate(1deg);
-  box-shadow: 0 0 30px #00ff88, 0 0 40px #00ff88;
-}
+  .card:nth-child(1) { animation-delay: 0.2s; }
+  .card:nth-child(2) { animation-delay: 0.4s; }
+  .card:nth-child(3) { animation-delay: 0.6s; }
+  .card:nth-child(4) { animation-delay: 0.8s; }
 
-button{
-  background:#00ff88;
-  border:none;
-  padding:10px 15px;
-  border-radius:8px;
-  font-weight:bold;
-  cursor:pointer;
-}
+  @keyframes cardAppear {
+    to { transform: scale(1); }
+  }
 
-button:hover{
-  background:#00cc6a;
-}
+  .card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 30px #00ff88;
+  }
 
-/* MODAL */
-.modal{
-  display:none;
-  position:fixed;
-  inset:0;
-  background: rgba(0,0,0,0.85);
-  justify-content:center;
-  align-items:center;
-  z-index:999;
-}
+  .card img.background-img {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: translate(-50%, -50%);
+    opacity: 0.3;
+    z-index: 0;
+  }
 
-.box{
-  background:#111;
-  padding:20px;
-  border-radius:15px;
-  width:350px;
-  transform: scale(0);
-  transition: transform 0.3s ease-in-out;
-}
+  .card-content { position: relative; z-index: 1; }
 
-.modal.show .box{
-  transform: scale(1);
-}
+  button {
+    background: #00ff88;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    transition: background 0.3s;
+  }
 
-input, select{
-  width:95%;
-  padding:10px;
-  margin:6px 0;
-  border-radius:6px;
-  border:none;
-}
+  button:hover { background: #00cc66; }
 
-.valor{
-  color:#00ff88;
-  font-weight:bold;
-  font-size:18px;
-}
+  /* Modal Carrinho */
+  .modal {
+    display: none;
+    position: fixed;
+    z-index: 100;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    overflow: auto;
+    background: rgba(0,0,0,0.85);
+    backdrop-filter: blur(5px);
+    animation: fadeIn 0.5s;
+  }
 
-.pix-area{
-  display:none;
-  margin-top:10px;
-}
+  @keyframes fadeIn { from {opacity:0;} to {opacity:1;} }
 
-.qr{
-  margin:10px auto;
-  background:white;
-  padding:8px;
-  width:150px;
-}
+  .modal-content {
+    background-color: #111;
+    margin: 5% auto;
+    padding: 20px;
+    border: 2px solid #00ff88;
+    width: 90%;
+    max-width: 500px;
+    border-radius: 10px;
+    color: white;
+    text-align: left;
+    position: relative;
+    animation: slideDown 0.5s;
+  }
 
-/* CARRINHO */
-#carrinho{
-  position:fixed;
-  top:20px;
-  right:20px;
-  background:rgba(0,0,0,0.8);
-  padding:15px;
-  border-radius:15px;
-  width:220px;
-  max-height:80%;
-  overflow:auto;
-  box-shadow:0 0 20px #00ff88;
-}
+  @keyframes slideDown { from {transform: translateY(-50px);} to {transform: translateY(0);} }
 
-#carrinho h3{
-  margin-top:0;
-  text-align:center;
-}
+  .close {
+    color: #00ff88;
+    float: right;
+    font-size: 28px;
+    font-weight: bold;
+    cursor: pointer;
+  }
 
-.carrinho-item{
-  display:flex;
-  justify-content:space-between;
-  margin:5px 0;
-}
+  .cart-item { margin-bottom: 15px; padding-bottom: 10px; border-bottom: 1px solid #00ff88; }
+  input, select { width: 100%; margin: 5px 0 15px 0; padding: 8px; border-radius: 5px; border: none; outline: none; }
+  .qr-code { text-align: center; margin: 15px 0; }
 
-/* PAINEL ADMIN */
-#adminPanel{
-  position:fixed;
-  top:20px;
-  left:20px;
-  background:rgba(0,0,0,0.9);
-  padding:15px;
-  border-radius:15px;
-  width:300px;
-  max-height:90%;
-  overflow:auto;
-  box-shadow:0 0 25px #ffcc00;
-}
+  /* Painel Admin escondido */
+  #adminPanel {
+    position: fixed;
+    top: 10px; left: 10px;
+    background: rgba(0,0,0,0.9);
+    padding: 10px;
+    border: 2px solid #ffdd00;
+    border-radius: 8px;
+    display: none;
+    color: #ffdd00;
+    z-index: 200;
+  }
 
-#adminPanel h3{
-  margin-top:0;
-  text-align:center;
-  color:#ffcc00;
-}
-
-.admin-item{
-  margin-bottom:10px;
-  background:rgba(255,255,255,0.1);
-  padding:6px;
-  border-radius:8px;
-}
+  #adminPanel h3 { margin: 0 0 10px 0; font-size: 16px; }
 </style>
 </head>
 <body>
 
-<header>🔥 Ultimate Fruits - ULTRA MAX ADMIN 🔥</header>
+<h1>🔥 Ultimate Fruits 🔥</h1>
 
-<div class="container" id="produtosContainer"></div>
-
-<!-- CARRINHO -->
-<div id="carrinho">
-<h3>Carrinho</h3>
-<div id="itensCarrinho"></div>
-<div class="valorTotal">Total: R$ <span id="total">0.00</span></div>
-<button onclick="finalizarCarrinho()">Finalizar Compra</button>
-</div>
-
-<!-- MODAL DE COMPRA -->
-<div class="modal" id="modal">
-  <div class="box">
-    <h3 id="produtoNome"></h3>
-    <div class="valor" id="produtoValor"></div>
-
-    <input id="nome" placeholder="Nome completo">
-    <input id="cpf" placeholder="CPF">
-
-    <select id="pagamento">
-      <option>PIX</option>
-      <option>Cartão</option>
-    </select>
-
-    <button onclick="adicionarCarrinho()">Adicionar ao Carrinho</button>
-    <button onclick="fechar()">Cancelar</button>
-
-    <div class="pix-area" id="pixArea">
-      <p><b>Pague com PIX</b></p>
-      <div class="qr">
-        <img id="qrImg" width="140">
-      </div>
-      <input id="pixKey" value="46786167802" readonly>
-      <button onclick="copiarPix()">📋 Copiar PIX</button>
-    </div>
+<div class="cards-container">
+  <div class="card">
+    <img class="background-img" src="https://i.imgur.com/xRix2sP.png" alt="Venom">
+    <div class="card-content"><h2>Venom</h2><p>R$ 10,00</p><button onclick="addToCart('Venom',10)">Comprar</button></div>
+  </div>
+  <div class="card">
+    <img class="background-img" src="https://i.imgur.com/3YJ0p6t.png" alt="Trex">
+    <div class="card-content"><h2>Trex</h2><p>R$ 9,50</p><button onclick="addToCart('Trex',9.5)">Comprar</button></div>
+  </div>
+  <div class="card">
+    <img class="background-img" src="https://i.imgur.com/vcZ0Qqg.png" alt="Shadow">
+    <div class="card-content"><h2>Shadow</h2><p>R$ 8,00</p><button onclick="addToCart('Shadow',8)">Comprar</button></div>
+  </div>
+  <div class="card">
+    <img class="background-img" src="https://i.imgur.com/BOjQnPX.png" alt="Tiger">
+    <div class="card-content"><h2>Tiger</h2><p>R$ 13,50</p><button onclick="addToCart('Tiger',13.5)">Comprar</button></div>
   </div>
 </div>
 
-<!-- PAINEL ADMIN -->
+<!-- Modal Carrinho -->
+<div id="cartModal" class="modal">
+  <div class="modal-content">
+    <span class="close" onclick="closeCart()">&times;</span>
+    <h2>Carrinho</h2>
+    <div id="cartItems"></div>
+
+    <h3>Dados do Cliente</h3>
+    <input type="text" id="clientName" placeholder="Nome completo">
+    <input type="text" id="clientCPF" placeholder="CPF">
+    <select id="paymentMethod">
+      <option value="pix">PIX</option>
+      <option value="boleto">Boleto</option>
+      <option value="cartao">Cartão</option>
+    </select>
+
+    <div class="qr-code" id="pixQRCode"></div>
+    <button onclick="checkout()">Finalizar Compra</button>
+  </div>
+</div>
+
+<!-- Painel Admin -->
 <div id="adminPanel">
-<h3>Admin Painel</h3>
-<div id="pedidosAdmin"></div>
+  <h3>Painel Admin</h3>
+  <div id="adminOrders"></div>
 </div>
 
 <script>
-// PRODUTOS
-const produtos = [
-  {nome:"Venom", valor:10},
-  {nome:"Trex", valor:9.5},
-  {nome:"Shadow", valor:8},
-  {nome:"Yeti", valor:13.5}
-];
+let cart = [];
+const adminPassword = "supremo123"; // senha para ativar painel admin
+let adminVisible = false;
 
-// CARRINHO E PEDIDOS
-let carrinho = [];
-let pedidos = [];
-let valorAtual = 0;
-let produtoAtual = "";
+// Adicionar ao carrinho
+function addToCart(name, price){
+  cart.push({name, price});
+  openCart();
+}
 
-const container = document.getElementById("produtosContainer");
-produtos.forEach(p=>{
-  const div = document.createElement("div");
-  div.className="card";
-  div.innerHTML=`<h3>${p.nome}</h3>
-                 <p>R$ ${p.valor.toFixed(2)}</p>
-                 <button onclick="comprar('${p.nome}',${p.valor})">Comprar</button>`;
-  container.appendChild(div);
+// Abrir modal carrinho
+function openCart(){
+  document.getElementById('cartModal').style.display = 'block';
+  renderCart();
+}
+
+// Fechar modal
+function closeCart(){ document.getElementById('cartModal').style.display = 'none'; }
+
+// Renderizar carrinho
+function renderCart(){
+  const container = document.getElementById('cartItems');
+  container.innerHTML = '';
+  cart.forEach(item=>{
+    const div = document.createElement('div');
+    div.className = 'cart-item';
+    div.textContent = `${item.name} - R$ ${item.price.toFixed(2)}`;
+    container.appendChild(div);
+  });
+}
+
+// Checkout
+function checkout(){
+  const name = document.getElementById('clientName').value;
+  const cpf = document.getElementById('clientCPF').value;
+  const method = document.getElementById('paymentMethod').value;
+
+  if(!name || !cpf){ alert('Preencha Nome e CPF!'); return; }
+
+  let total = cart.reduce((acc,item)=> acc+item.price,0);
+
+  if(method==='pix'){
+    const pixKey = "46786167802";
+    document.getElementById('pixQRCode').innerHTML = `
+      <p>PIX: ${pixKey}</p>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?data=${pixKey}&size=150x150" alt="QR Code PIX">
+    `;
+    alert(`PIX gerado! Total: R$ ${total.toFixed(2)}`);
+  } else {
+    alert(`Pagamento ${method} simulado! Total: R$ ${total.toFixed(2)}`);
+  }
+
+  if(adminVisible){
+    const adminDiv = document.getElementById('adminOrders');
+    const orderDiv = document.createElement('div');
+    orderDiv.textContent = `Cliente: ${name}, CPF: ${cpf}, Método: ${method}, Total: R$ ${total.toFixed(2)}, Itens: ${cart.map(i=>i.name).join(', ')}`;
+    adminDiv.appendChild(orderDiv);
+  }
+
+  cart = [];
+  renderCart();
+}
+
+// Ativar painel admin
+document.addEventListener('keydown', (e)=>{
+  if(e.ctrlKey && e.altKey && e.key==='A'){
+    const pass = prompt('Senha Admin:');
+    if(pass===adminPassword){
+      adminVisible = !adminVisible;
+      document.getElementById('adminPanel').style.display = adminVisible?'block':'none';
+    } else alert('Senha incorreta!');
+  }
 });
-
-// ABRIR MODAL
-function comprar(nome,valor){
-  produtoAtual = nome;
-  valorAtual = valor;
-
-  const modal = document.getElementById("modal");
-  modal.style.display="flex";
-  modal.classList.add("show");
-
-  document.getElementById("produtoNome").innerText = nome;
-  document.getElementById("produtoValor").innerText = "Valor: R$ " + valor.toFixed(2);
-
-  let chave="46786167802";
-  document.getElementById("qrImg").src=
-    "https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=PIX:"+chave+"-R$"+valor;
-}
-
-function fechar(){
-  const modal = document.getElementById("modal");
-  modal.classList.remove("show");
-  setTimeout(()=>{
-    modal.style.display="none";
-    document.getElementById("pixArea").style.display="none";
-  },300);
-}
-
-function adicionarCarrinho(){
-  let nomeUser=document.getElementById("nome").value.trim();
-  let cpf=document.getElementById("cpf").value.trim();
-  if(!nomeUser || !cpf){
-    alert("Preencha Nome e CPF!");
-    return;
-  }
-
-  carrinho.push({produto:produtoAtual,valor:valorAtual});
-  atualizarCarrinho();
-  fechar();
-}
-
-// ATUALIZA CARRINHO
-function atualizarCarrinho(){
-  const itens = document.getElementById("itensCarrinho");
-  itens.innerHTML="";
-  let total = 0;
-  carrinho.forEach((item,index)=>{
-    total += item.valor;
-    const div = document.createElement("div");
-    div.className="carrinho-item";
-    div.innerHTML=`<span>${item.produto} R$${item.valor.toFixed(2)}</span>
-                   <button onclick="remover(${index})">❌</button>`;
-    itens.appendChild(div);
-  });
-  document.getElementById("total").innerText = total.toFixed(2);
-}
-
-function remover(index){
-  carrinho.splice(index,1);
-  atualizarCarrinho();
-}
-
-// FINALIZAR CARRINHO
-function finalizarCarrinho(){
-  if(carrinho.length===0){
-    alert("Carrinho vazio!");
-    return;
-  }
-
-  let nomeUser=document.getElementById("nome").value.trim();
-  let cpf=document.getElementById("cpf").value.trim();
-  let pagamento=document.getElementById("pagamento").value;
-
-  if(!nomeUser || !cpf){
-    alert("Preencha Nome e CPF!");
-    return;
-  }
-
-  // ADICIONA PEDIDO NO ADMIN
-  pedidos.push({
-    nome:nomeUser,
-    cpf:cpf,
-    itens:[...carrinho],
-    total:carrinho.reduce((a,b)=>a+b.valor,0),
-    pagamento:pagamento
-  });
-  atualizarAdmin();
-
-  if(pagamento==="PIX"){
-    document.getElementById("pixArea").style.display="block";
-  } else{
-    alert(`✅ Compra no cartão simulada com sucesso!\nTotal: R$ ${carrinho.reduce((a,b)=>a+b.valor,0).toFixed(2)}`);
-    carrinho=[];
-    atualizarCarrinho();
-  }
-}
-
-// ATUALIZA PAINEL ADMIN
-function atualizarAdmin(){
-  const painel = document.getElementById("pedidosAdmin");
-  painel.innerHTML="";
-  pedidos.forEach((p,i)=>{
-    const div=document.createElement("div");
-    div.className="admin-item";
-    div.innerHTML=`<b>Pedido ${i+1}</b><br>
-                   Nome: ${p.nome}<br>
-                   CPF: ${p.cpf}<br>
-                   Itens: ${p.itens.map(it=>it.produto).join(", ")}<br>
-                   Total: R$ ${p.total.toFixed(2)}<br>
-                   Pagamento: ${p.pagamento}`;
-    painel.appendChild(div);
-  });
-}
-
-// PIX
-function copiarPix(){
-  navigator.clipboard.writeText("46786167802");
-  alert("PIX copiado!");
-}
 </script>
 
 </body>
