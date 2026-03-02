@@ -1,99 +1,280 @@
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
 <meta charset="UTF-8">
-<title>Ultimate Fruits - UKTIMA FINAL SUPREMA</title>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ultimate Fruits - UNIVERSO</title>
+
 <style>
-body{margin:0;padding:0;font-family:Arial,sans-serif;overflow-x:hidden;color:white;background:#0a001f;}
-#starCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:-1;}
-h1{text-align:center;font-size:2em;animation:titleGlow 3s infinite alternate;margin-top:20px;}
-@keyframes titleGlow{0%{text-shadow:0 0 10px #ff00ff,0 0 20px #ff00ff,0 0 30px #ff66ff;}50%{text-shadow:0 0 10px #00ffff,0 0 20px #66ffcc,0 0 30px #ffcc00;}100%{text-shadow:0 0 10px #ff66ff,0 0 20px #ff00ff,0 0 30px #ff99ff;}}
-.cards-container{display:flex;flex-wrap:wrap;justify-content:center;margin:20px;}
-.card{background: rgba(30,0,50,0.85);margin:15px;padding:20px;border-radius:15px;width:200px;text-align:center;box-shadow:0 0 25px #ff66ff;transform:translateY(-50px);opacity:0;animation:slideUp 0.6s forwards;transition:transform 0.3s,box-shadow 0.3s;position:relative;}
-.card:hover{transform:scale(1.08);box-shadow:0 0 60px #ff99ff;}
-.card-content{position:relative;z-index:1;}
-@keyframes slideUp{to{transform:translateY(0);opacity:1;}}
-button{background:#ff66ff;border:none;padding:10px 20px;border-radius:8px;font-weight:bold;cursor:pointer;animation:buttonGlow 2s infinite alternate;}
-button:hover{background:#cc33cc;}
-@keyframes buttonGlow{0%{box-shadow:0 0 10px #ff66ff;}25%{box-shadow:0 0 15px #00ffff;}50%{box-shadow:0 0 20px #66ffcc;}75%{box-shadow:0 0 25px #ffcc00;}100%{box-shadow:0 0 30px #ff00ff;}}
-#cartSidebar{position:fixed;top:0;right:0;width:300px;height:100%;background:rgba(20,0,40,0.95);border-left:2px solid #ff66ff;padding:20px;overflow-y:auto;box-shadow:-5px 0 20px #ff66ff;}
-#cartSidebar h2{text-align:center;}
-.cart-item{margin-bottom:15px;border-bottom:1px solid #ff66ff;padding-bottom:10px;}
-input,select{width:100%;margin:5px 0 15px 0;padding:8px;border-radius:5px;border:none;outline:none;}
-.qr-code{text-align:center;margin:15px 0;cursor:pointer;}
-#adminPanel{position:fixed;top:10px;left:10px;background:rgba(0,0,0,0.9);padding:10px;border:2px solid #ffdd00;border-radius:8px;display:none;color:#ffdd00;z-index:200;max-width:400px;animation: fadeInPanel 0.5s;}
-@keyframes fadeInPanel{from{opacity:0; transform:translateX(-20px);} to{opacity:1; transform:translateX(0);}}
+body{
+margin:0;
+overflow:hidden;
+font-family:Arial,Helvetica,sans-serif;
+background:#040014;
+color:white;
+}
+
+/* CANVAS */
+#universe{
+position:fixed;
+inset:0;
+z-index:-1;
+}
+
+/* TÍTULO */
+h1{
+text-align:center;
+margin:25px 0;
+font-size:2.8em;
+background:linear-gradient(90deg,#ff00ff,#00ffff,#ff00ff);
+background-size:300%;
+-webkit-background-clip:text;
+color:transparent;
+animation:shine 6s linear infinite;
+}
+@keyframes shine{
+0%{background-position:0%}
+100%{background-position:300%}
+}
+
+/* CARDS */
+.cards{
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:25px;
+padding-bottom:100px;
+}
+
+.card{
+width:210px;
+padding:20px;
+border-radius:20px;
+background:rgba(255,255,255,0.05);
+backdrop-filter:blur(15px);
+border:1px solid rgba(255,255,255,0.15);
+box-shadow:0 0 30px rgba(255,0,255,.4);
+text-align:center;
+transition:.4s;
+animation:float 4s ease-in-out infinite;
+}
+
+@keyframes float{
+0%,100%{transform:translateY(0)}
+50%{transform:translateY(-10px)}
+}
+
+.card:hover{
+transform:scale(1.07);
+box-shadow:0 0 60px #00ffff;
+}
+
+.card button{
+margin-top:12px;
+padding:10px;
+width:100%;
+border:none;
+border-radius:10px;
+background:linear-gradient(90deg,#ff00ff,#00ffff);
+color:white;
+font-weight:bold;
+cursor:pointer;
+box-shadow:0 0 20px #ff00ff;
+}
+
+/* CARRINHO */
+#cart{
+position:fixed;
+right:-350px;
+top:0;
+width:320px;
+height:100%;
+background:rgba(10,0,30,.95);
+border-left:2px solid #ff00ff;
+padding:20px;
+transition:.4s;
+z-index:10;
+}
+#cart.open{right:0}
+
+.cart-item{
+border-bottom:1px solid #ff00ff;
+padding:6px 0;
+}
+
+.total{
+margin-top:10px;
+font-weight:bold;
+}
+
+.finish{
+margin-top:12px;
+padding:12px;
+width:100%;
+border:none;
+border-radius:10px;
+background:#00ffaa;
+cursor:pointer;
+font-weight:bold;
+}
+
+/* MODAL */
+#modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,.7);
+display:none;
+align-items:center;
+justify-content:center;
+}
+.box{
+background:#120030;
+padding:25px;
+border-radius:15px;
+width:320px;
+box-shadow:0 0 50px #ff00ff;
+}
+.box input,.box select{
+width:100%;
+padding:10px;
+margin:6px 0;
+border-radius:8px;
+border:none;
+}
+.qr{text-align:center;margin-top:10px}
 </style>
 </head>
-<body>
-<canvas id="starCanvas"></canvas>
-<h1>🔥 Ultimate Fruits - UKTIMA FINAL SUPREMA 🔥</h1>
-<div id="cards" class="cards-container"></div>
 
-<div id="cartSidebar">
-<h2>Carrinho</h2>
+<body>
+
+<canvas id="universe"></canvas>
+<h1>🌌 ULTIMATE FRUITS 🌌</h1>
+
+<div class="cards" id="cards"></div>
+
+<div id="cart">
+<h2>🛒 Carrinho</h2>
 <div id="cartItems"></div>
-<h3>Dados do Cliente</h3>
-<input type="text" id="clientName" placeholder="Nome completo">
-<input type="text" id="clientCPF" placeholder="CPF">
-<select id="paymentMethod">
-<option value="pix">PIX</option>
-<option value="boleto">Boleto</option>
-<option value="cartao">Cartão</option>
-</select>
-<div class="qr-code" id="pixQRCode" onclick="copyPix()">Clique para copiar PIX</div>
-<button onclick="checkout()">Finalizar Compra</button>
+<div class="total" id="total">Total: R$ 0.00</div>
+<button class="finish" onclick="openModal()">Finalizar</button>
 </div>
 
-<div id="adminPanel"><h3>Painel Admin</h3><div id="adminOrders"></div></div>
+<div id="modal">
+<div class="box">
+<h3>Pagamento</h3>
+<input id="nome" placeholder="Nome completo">
+<input id="cpf" placeholder="CPF">
+<select id="metodo">
+<option value="pix">PIX</option>
+<option value="cartao">Cartão</option>
+<option value="boleto">Boleto</option>
+</select>
+<div class="qr" id="qr"></div>
+<button class="finish" onclick="pagar()">Pagar</button>
+</div>
+</div>
 
 <script>
-// Produtos ordenados por preço
-const products=[{name:'Shadow',price:8},{name:'Trex',price:9.5},{name:'Venom',price:10},{name:'Tiger',price:13.5}];
-products.sort((a,b)=>a.price-b.price);
-const cardsContainer=document.getElementById('cards');
-products.forEach((p,i)=>{
-  const card=document.createElement('div');card.className='card';card.style.animationDelay=`${i*0.2}s`;
-  card.innerHTML=`<div class="card-content"><h2>${p.name}</h2><p>R$ ${p.price.toFixed(2)}</p><button onclick="addToCart('${p.name}',${p.price},this)">Comprar</button></div>`;
-  cardsContainer.appendChild(card);
+// ===== FUNDO UNIVERSO =====
+const canvas=document.getElementById("universe");
+const ctx=canvas.getContext("2d");
+function resize(){canvas.width=innerWidth;canvas.height=innerHeight}
+window.onresize=resize;resize();
+
+let stars=[];
+for(let i=0;i<180;i++){
+stars.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*2,
+dx:(Math.random()-.5)*0.3,
+dy:(Math.random()-.5)*0.3
+});
+}
+
+function animate(){
+ctx.fillStyle="#040014";
+ctx.fillRect(0,0,canvas.width,canvas.height);
+
+ctx.fillStyle="white";
+stars.forEach(s=>{
+s.x+=s.dx;
+s.y+=s.dy;
+if(s.x<0||s.x>canvas.width) s.dx*=-1;
+if(s.y<0||s.y>canvas.height) s.dy*=-1;
+
+ctx.beginPath();
+ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+ctx.fill();
+});
+requestAnimationFrame(animate);
+}
+animate();
+
+// ===== PRODUTOS ORDENADOS =====
+const products=[
+{name:"Shadow",price:8},
+{name:"Trex",price:9.5},
+{name:"Venom",price:10},
+{name:"Tiger",price:13.5}
+].sort((a,b)=>a.price-b.price);
+
+const container=document.getElementById("cards");
+products.forEach(p=>{
+const el=document.createElement("div");
+el.className="card";
+el.innerHTML=`
+<h3>${p.name}</h3>
+<p>R$ ${p.price.toFixed(2)}</p>
+<button onclick="add('${p.name}',${p.price})">Comprar</button>
+`;
+container.appendChild(el);
 });
 
-// Canvas estrelas + cometas
-const canvas=document.getElementById('starCanvas');const ctx=canvas.getContext('2d');let stars=[],particles=[];
-function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
-window.addEventListener('resize',resizeCanvas);resizeCanvas();
-for(let i=0;i<200;i++){stars.push({x:Math.random()*canvas.width,y:Math.random()*canvas.height,r:Math.random()*1.5+0.5,dx:(Math.random()-0.5)*0.2,dy:(Math.random()-0.5)*0.2});}
-function animateStars(){
-  ctx.clearRect(0,0,canvas.width,canvas.height);
-  stars.forEach(s=>{s.x+=s.dx;s.y+=s.dy;if(s.x>canvas.width)s.x=0;if(s.x<0)s.x=canvas.width;if(s.y>canvas.height)s.y=0;if(s.y<0)s.y=canvas.height;ctx.beginPath();ctx.arc(s.x,s.y,s.r,0,Math.PI*2);ctx.fillStyle='white';ctx.fill();});
-  particles.forEach((p,i)=>{p.x+=p.dx;p.y+=p.dy;p.r*=0.9;ctx.beginPath();ctx.arc(p.x,p.y,p.r,0,Math.PI*2);ctx.fillStyle=p.color;ctx.fill();if(p.r<0.5)particles.splice(i,1);});
-  requestAnimationFrame(animateStars);
+// ===== CARRINHO =====
+let cart=[];
+function add(name,price){
+cart.push({name,price});
+render();
+document.getElementById("cart").classList.add("open");
 }
-animateStars();
 
-// Carrinho + rastro cometa + Admin
-let cart=[]; const adminPassword='supremo123'; let adminVisible=false;
-function addToCart(name,price,btn){
-  cart.push({name,price});renderCart();
-  const btnRect=btn.getBoundingClientRect();
-  const cartRect=document.getElementById('cartSidebar').getBoundingClientRect();
-  // Rastro cometa
-  for(let i=0;i<30;i++){
-    particles.push({x:btnRect.left+btn.offsetWidth/2,y:btnRect.top+btn.offsetHeight/2+window.scrollY,r:Math.random()*4+2,
-      dx:(cartRect.left-btnRect.left)/30+(Math.random()-0.5)*2,
-      dy:(cartRect.top-btnRect.top)/30+(Math.random()-0.5)*2,
-      color:`hsl(${Math.random()*360},100%,50%)`});
-  }
-  // Som espacial
-  const audio=new Audio('https://freesound.org/data/previews/331/331912_3248244-lq.mp3');audio.volume=0.3;audio.play();
+function render(){
+let total=0;
+const div=document.getElementById("cartItems");
+div.innerHTML="";
+cart.forEach(i=>{
+total+=i.price;
+div.innerHTML+=`<div class="cart-item">${i.name} - R$ ${i.price.toFixed(2)}</div>`;
+});
+document.getElementById("total").textContent="Total: R$ "+total.toFixed(2);
 }
-function renderCart(){const container=document.getElementById('cartItems');container.innerHTML='';cart.forEach(item=>{const div=document.createElement('div');div.className='cart-item';div.textContent=`${item.name} - R$ ${item.price.toFixed(2)}`;container.appendChild(div);});}
-function checkout(){const name=document.getElementById('clientName').value;const cpf=document.getElementById('clientCPF').value;const method=document.getElementById('paymentMethod').value;if(!name||!cpf){alert('Preencha Nome e CPF!');return;}let total=cart.reduce((a,b)=>a+b.price,0);if(method==='pix'){const pixKey='46786167802';document.getElementById('pixQRCode').innerHTML=`<p>PIX: ${pixKey}</p><img src="https://api.qrserver.com/v1/create-qr-code/?data=${pixKey}&size=150x150">`;alert(`PIX gerado! Total: R$ ${total.toFixed(2)}`);}else{alert(`Pagamento ${method} simulado! Total: R$ ${total.toFixed(2)}`);}
-if(adminVisible){const adminDiv=document.getElementById('adminOrders');const order=document.createElement('div');order.style.animation='fadeIn 0.5s';order.textContent=`Cliente: ${name}, CPF: ${cpf}, Método: ${method}, Total: R$ ${total.toFixed(2)}, Itens: ${cart.map(i=>i.name).join(', ')}`;adminDiv.appendChild(order);}
-cart=[];renderCart();}
-function copyPix(){navigator.clipboard.writeText('46786167802').then(()=>alert('PIX copiado!'));}
-document.addEventListener('keydown',(e)=>{if(e.ctrlKey&&e.altKey&&e.key==='A'){const pass=prompt('Senha Admin:');if(pass===adminPassword){adminVisible=!adminVisible;document.getElementById('adminPanel').style.display=adminVisible?'block':'none';}else alert('Senha incorreta!');}});
+
+// ===== PAGAMENTO =====
+function openModal(){
+document.getElementById("modal").style.display="flex";
+}
+
+function pagar(){
+const nome=document.getElementById("nome").value;
+const cpf=document.getElementById("cpf").value;
+const metodo=document.getElementById("metodo").value;
+if(!nome||!cpf){alert("Preencha os dados");return;}
+let total=cart.reduce((a,b)=>a+b.price,0);
+
+if(metodo==="pix"){
+const pix="46786167802";
+document.getElementById("qr").innerHTML=
+`<p>PIX: ${pix}</p>
+<img src="https://api.qrserver.com/v1/create-qr-code/?data=${pix}&size=150x150">`;
+}
+
+alert("Pagamento confirmado 🚀 Total: R$ "+total.toFixed(2));
+cart=[];
+render();
+}
 </script>
+
 </body>
 </html>
