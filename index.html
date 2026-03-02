@@ -1,3 +1,6 @@
+
+
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -6,66 +9,143 @@
 <title>Ultimate Fruits</title>
 
 <style>
+/* ===== BASE ===== */
 body{
 margin:0;
 font-family:Arial,Helvetica,sans-serif;
-background:#060018;
+background:#12002b;
 color:white;
 overflow-x:hidden;
-overflow-y:auto;
+animation:fadePage .8s ease;
 }
 
-/* FUNDO */
+/* ===== INTRO ===== */
+#intro{
+position:fixed;
+inset:0;
+background:radial-gradient(circle,#1a0033,#000);
+display:flex;
+align-items:center;
+justify-content:center;
+z-index:9999;
+animation:introOut 1s ease forwards;
+animation-delay:3s;
+}
+
+#intro h1{
+font-size:2.4em;
+letter-spacing:4px;
+background:linear-gradient(90deg,#ff00ff,#00ffff,#ff00ff);
+background-size:300%;
+-webkit-background-clip:text;
+color:transparent;
+animation:logoZoom 2s ease, shine 2s linear infinite;
+filter:drop-shadow(0 0 25px #ff00ff);
+}
+
+@keyframes logoZoom{
+from{transform:scale(.4);opacity:0;}
+to{transform:scale(1);opacity:1;}
+}
+
+@keyframes shine{
+0%{background-position:0%;}
+100%{background-position:300%;}
+}
+
+@keyframes introOut{
+to{opacity:0;visibility:hidden;}
+}
+
+@keyframes fadePage{
+from{opacity:0;}
+to{opacity:1;}
+}
+
+/* ===== FUNDO ===== */
 #bg{
 position:fixed;
 inset:0;
 z-index:-1;
 }
 
-/* TÍTULO */
-h1{
-text-align:center;
-margin:25px 0;
-font-size:2.3em;
-background:linear-gradient(90deg,#ff00ff,#7a5cff,#ff00ff);
-background-size:300%;
--webkit-background-clip:text;
-color:transparent;
-animation:shine 6s linear infinite;
-}
-@keyframes shine{
-0%{background-position:0%}
-100%{background-position:300%}
+/* ===== HEADER ===== */
+header{
+position:fixed;
+top:0;
+width:100%;
+height:60px;
+background:rgba(10,0,30,.85);
+backdrop-filter:blur(10px);
+display:flex;
+align-items:center;
+justify-content:space-between;
+padding:0 20px;
+border-bottom:1px solid rgba(255,0,255,.3);
+z-index:100;
 }
 
-/* CARDS */
+.logo{
+font-weight:bold;
+background:linear-gradient(90deg,#ff00ff,#00ffff);
+-webkit-background-clip:text;
+color:transparent;
+animation:logoGlow 2s infinite alternate;
+}
+
+@keyframes logoGlow{
+from{filter:drop-shadow(0 0 5px #ff00ff);}
+to{filter:drop-shadow(0 0 18px #00ffff);}
+}
+
+.stats{
+font-size:.8em;
+color:#00ffaa;
+}
+
+/* ===== CONTEÚDO ===== */
+h1{
+margin-top:100px;
+text-align:center;
+}
+
 .cards{
-display:flex;
-flex-wrap:wrap;
-justify-content:center;
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
 gap:20px;
-padding-bottom:140px;
+padding:20px 20px 80px;
 }
 
 .card{
-width:200px;
 padding:18px;
 border-radius:16px;
-background:rgba(255,255,255,0.05);
+background:rgba(255,255,255,0.06);
 backdrop-filter:blur(12px);
 border:1px solid rgba(255,255,255,0.12);
 box-shadow:0 0 25px rgba(255,0,255,.35);
 text-align:center;
-transition:.3s;
+transition:.25s;
+opacity:0;
+transform:translateY(40px);
+animation:cardUp .6s ease forwards;
 }
 
-.card:hover{
-transform:translateY(-6px) scale(1.05);
-box-shadow:0 0 45px #00ffff;
+.card:nth-child(1){animation-delay:.1s;}
+.card:nth-child(2){animation-delay:.2s;}
+.card:nth-child(3){animation-delay:.3s;}
+.card:nth-child(4){animation-delay:.4s;}
+
+@keyframes cardUp{
+to{opacity:1;transform:translateY(0);}
+}
+
+.price{
+color:#00ffaa;
+margin:10px 0;
+font-weight:bold;
 }
 
 .card button{
-margin-top:10px;
 padding:10px;
 width:100%;
 border:none;
@@ -76,183 +156,121 @@ font-weight:bold;
 cursor:pointer;
 }
 
-/* BOTÃO CARRINHO */
-.cartBtn{
+/* ===== ADMIN ===== */
+#adminPanel{
 position:fixed;
-right:15px;
-bottom:15px;
-padding:16px;
-border:none;
-border-radius:50%;
-background:#ff00ff;
-color:white;
-font-size:20px;
-box-shadow:0 0 20px #ff00ff;
-cursor:pointer;
-z-index:100;
-}
-
-/* CARRINHO */
-#cart{
-position:fixed;
-right:-340px;
-top:0;
-width:300px;
-height:100%;
-background:rgba(15,0,40,.96);
-border-left:2px solid #ff00ff;
-padding:18px;
-transition:.35s;
-z-index:20;
-}
-#cart.open{right:0}
-
-.cart-item{
-border-bottom:1px solid #ff00ff;
-padding:6px 0;
-font-size:.9em;
-}
-
-.total{
-margin-top:10px;
-font-weight:bold;
-}
-
-.finish{
-margin-top:12px;
-padding:12px;
-width:100%;
-border:none;
-border-radius:10px;
-background:#00ffaa;
-font-weight:bold;
-cursor:pointer;
-}
-
-/* MODAL */
-#modal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,.7);
-display:none;
-align-items:center;
-justify-content:center;
-z-index:30;
-}
-
-.box{
+bottom:10px;
+left:10px;
 background:#140033;
-padding:22px;
-border-radius:14px;
-width:300px;
-box-shadow:0 0 45px #ff00ff;
-}
-
-.box input,.box select{
-width:100%;
-padding:10px;
-margin:6px 0;
-border-radius:8px;
-border:none;
-}
-
-/* NOTIFICAÇÃO */
-#toast{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%) translateY(80px);
-background:#00ffaa;
-color:#002b22;
-padding:14px 22px;
+padding:14px;
 border-radius:12px;
-font-weight:bold;
-opacity:0;
-transition:.4s;
-z-index:50;
-}
-#toast.show{
-opacity:1;
-transform:translateX(-50%) translateY(0);
+box-shadow:0 0 25px #ff00ff;
+display:none;
+z-index:200;
+font-size:.85em;
 }
 </style>
 </head>
 
 <body>
 
+<!-- INTRO -->
+<div id="intro">
+<h1>ULTIMATE FRUITS</h1>
+</div>
+
 <canvas id="bg"></canvas>
 
-<h1>🌌 ULTIMATE FRUITS 🌌</h1>
+<header>
+<div class="logo">ULTIMATE FRUITS</div>
+<div class="stats">
+Pedidos: <span id="pedidos">0</span> |
+R$ <span id="faturamento">0.00</span>
+</div>
+</header>
+
+<h1>🌌 Loja Oficial 🌌</h1>
 
 <div class="cards" id="cards"></div>
 
-<button class="cartBtn" onclick="toggleCart()">🛒</button>
-
-<div id="cart">
-<h2>🛒 Carrinho</h2>
-<div id="cartItems"></div>
-<div class="total" id="total">Total: R$ 0.00</div>
-<button class="finish" onclick="abrirPagamento()">Finalizar</button>
+<div id="adminPanel">
+<b>🔐 Admin</b><br>
+Pedidos: <span id="adminPedidos">0</span><br>
+Faturado: R$ <span id="adminFaturamento">0.00</span><br>
+<button onclick="resetar()">Resetar</button>
 </div>
-
-<div id="modal">
-<div class="box">
-<h3>Pagamento</h3>
-<input id="nome" placeholder="Nome completo">
-<input id="cpf" placeholder="CPF">
-<select id="metodo">
-<option value="pix">PIX</option>
-<option value="cartao">Cartão</option>
-<option value="boleto">Boleto</option>
-</select>
-<div id="qr" style="text-align:center;margin-top:8px"></div>
-<button class="finish" onclick="pagar()">Pagar</button>
-</div>
-</div>
-
-<div id="toast">✅ Pagamento realizado!</div>
 
 <script>
-// FUNDO GALÁXIA
+/* remover intro */
+setTimeout(()=>{
+const intro=document.getElementById("intro");
+if(intro) intro.remove();
+},4000);
+
+/* ===== UNIVERSO ===== */
 const canvas=document.getElementById("bg");
 const ctx=canvas.getContext("2d");
+
 function resize(){
 canvas.width=innerWidth;
 canvas.height=innerHeight;
 }
-window.onresize=resize;
+window.addEventListener("resize",resize);
 resize();
 
-let stars=[];
-for(let i=0;i<150;i++){
+const stars=[];
+for(let i=0;i<200;i++){
 stars.push({
-x:Math.random()*canvas.width,
-y:Math.random()*canvas.height,
-r:Math.random()*2,
-dx:(Math.random()-.5)*0.2,
-dy:(Math.random()-.5)*0.2
+x:(Math.random()-0.5)*canvas.width,
+y:(Math.random()-0.5)*canvas.height,
+z:Math.random()*canvas.width,
+size:Math.random()*2+0.5
 });
 }
 
 function animate(){
-ctx.fillStyle="#060018";
+ctx.fillStyle="#12002b";
 ctx.fillRect(0,0,canvas.width,canvas.height);
-ctx.fillStyle="white";
+
+const cx=canvas.width/2;
+const cy=canvas.height/2;
 
 stars.forEach(s=>{
-s.x+=s.dx;
-s.y+=s.dy;
-if(s.x<0||s.x>canvas.width) s.dx*=-1;
-if(s.y<0||s.y>canvas.height) s.dy*=-1;
+s.z-=2;
+if(s.z<=1){
+s.z=canvas.width;
+s.x=(Math.random()-0.5)*canvas.width;
+s.y=(Math.random()-0.5)*canvas.height;
+}
+
+const k=128/s.z;
+const px=s.x*k+cx;
+const py=s.y*k+cy;
+
 ctx.beginPath();
-ctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+ctx.fillStyle="rgba(255,120,255,0.9)";
+ctx.arc(px,py,s.size*k,0,Math.PI*2);
 ctx.fill();
 });
+
 requestAnimationFrame(animate);
 }
 animate();
 
-// PRODUTOS ORDENADOS
+/* ===== LOJA ===== */
+const NUMERO_WHATS="5516920016201";
+
+let pedidos=parseInt(localStorage.getItem("pedidos")||0);
+let faturamento=parseFloat(localStorage.getItem("faturamento")||0);
+
+function atualizar(){
+document.getElementById("pedidos").textContent=pedidos;
+document.getElementById("faturamento").textContent=faturamento.toFixed(2);
+document.getElementById("adminPedidos").textContent=pedidos;
+document.getElementById("adminFaturamento").textContent=faturamento.toFixed(2);
+}
+atualizar();
+
 const products=[
 {name:"Shadow",price:8},
 {name:"Trex",price:9.5},
@@ -263,56 +281,49 @@ const products=[
 const container=document.getElementById("cards");
 
 products.forEach(p=>{
-const el=document.createElement("div");
-el.className="card";
-el.innerHTML=`
+container.innerHTML+=`
+<div class="card">
 <h3>${p.name}</h3>
-<p>R$ ${p.price.toFixed(2)}</p>
-<button onclick="addCarrinho('${p.name}',${p.price})">Comprar</button>
+<div class="price">R$ ${p.price.toFixed(2)}</div>
+<button onclick="comprar('${p.name}',${p.price})">Comprar</button>
+</div>
 `;
-container.appendChild(el);
 });
 
-// CARRINHO
-let cart=[];
+function comprar(produto,preco){
+const nome=prompt("Digite seu nome:");
+if(!nome) return;
 
-function addCarrinho(name,price){
-cart.push({name,price});
-renderCart();
+pedidos++;
+faturamento+=preco;
+
+localStorage.setItem("pedidos",pedidos);
+localStorage.setItem("faturamento",faturamento);
+atualizar();
+
+const msg=
+`🚀 NOVO PEDIDO
+
+👤 Nome: ${nome}
+🛒 Produto: ${produto}
+💰 Valor: R$ ${preco.toFixed(2)}
+Pedido Nº: ${pedidos}`;
+
+window.open(`https://wa.me/${NUMERO_WHATS}?text=${encodeURIComponent(msg)}`,"_blank");
 }
 
-function renderCart(){
-let total=0;
-const div=document.getElementById("cartItems");
-div.innerHTML="";
-cart.forEach(i=>{
-total+=i.price;
-div.innerHTML+=`<div class="cart-item">${i.name} - R$ ${i.price.toFixed(2)}</div>`;
+/* ===== ADMIN SECRETO ===== */
+let segredo="";
+document.addEventListener("keydown",e=>{
+segredo+=e.key;
+if(segredo.includes("admin123")){
+document.getElementById("adminPanel").style.display="block";
+}
 });
-document.getElementById("total").textContent="Total: R$ "+total.toFixed(2);
-}
 
-function toggleCart(){
-document.getElementById("cart").classList.toggle("open");
-}
-
-// PAGAMENTO
-function abrirPagamento(){
-document.getElementById("modal").style.display="flex";
-}
-
-function pagar(){
-const nome=document.getElementById("nome").value;
-const cpf=document.getElementById("cpf").value;
-if(!nome||!cpf) return;
-
-cart=[];
-renderCart();
-document.getElementById("modal").style.display="none";
-
-const toast=document.getElementById("toast");
-toast.classList.add("show");
-setTimeout(()=>toast.classList.remove("show"),2500);
+function resetar(){
+localStorage.clear();
+location.reload();
 }
 </script>
 
