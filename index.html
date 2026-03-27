@@ -6,7 +6,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ultimate Fruits</title>
+<title>Infinity Storm</title>
 
 <style>
 /* ===== BASE ===== */
@@ -176,13 +176,13 @@ font-size:.85em;
 
 <!-- INTRO -->
 <div id="intro">
-<h1>ULTIMATE FRUITS</h1>
+<h1>INFINITY STORM</h1>
 </div>
 
 <canvas id="bg"></canvas>
 
 <header>
-<div class="logo">ULTIMATE FRUITS</div>
+<div class="logo">INFINITY STORM</div>
 <div class="stats">
 Pedidos: <span id="pedidos">0</span> |
 R$ <span id="faturamento">0.00</span>
@@ -271,13 +271,19 @@ document.getElementById("adminFaturamento").textContent=faturamento.toFixed(2);
 }
 atualizar();
 
-const products=[
-{name:"Shadow",price:8},
-{name:"Trex",price:9.5},
-{name:"Venom",price:10},
-{name:"Tiger",price:13.5},
-{name:"~Conta?",price:40.50}
-].sort((a,b)=>a.price-b.price);
+const products = [
+  { name: "Venom", price: 10 },
+  { name: "Control", price: 40.9 },
+  { name: "~Conta?", price: 137.50 },
+
+  { name: "Gravity", price: 9.00 },
+  { name: "Spirit", price: 12.50 },
+  { name: "Dough", price: 13.50 },
+  { name: "Yeti", price: 14.00 }
+
+].sort((a, b) => a.price - b.price);
+
+
 
 const container=document.getElementById("cards");
 
